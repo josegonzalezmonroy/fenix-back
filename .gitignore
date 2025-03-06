@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### Variaveis de ambiente ###
-application-external.env
+.env
