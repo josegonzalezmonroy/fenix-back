@@ -40,11 +40,14 @@ public class TokenResource {
         var now = Instant.now();
         var expiresIn = 3600L;
 
+        var scope = usuario.get().getPerfil();
+
         var claims = JwtClaimsSet.builder()
             .issuer("mybackend")
             .subject(usuario.get().getId().toString())
             .issuedAt(now)
             .expiresAt(now.plusSeconds(expiresIn))
+            .claim("scope", scope)
             .build();
 
         var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
