@@ -12,7 +12,7 @@ import com.projetofinal.backend.entities.Usuario;
 import com.projetofinal.backend.services.UsuarioService;
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/usuarios")
 public class UsuarioResource {
 
     @Autowired
