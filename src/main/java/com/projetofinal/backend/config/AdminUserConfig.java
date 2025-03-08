@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.projetofinal.backend.entities.Usuario;
+import com.projetofinal.backend.entities.Models.Perfil;
 import com.projetofinal.backend.repositories.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
@@ -35,7 +36,7 @@ public class AdminUserConfig implements CommandLineRunner {
                     usuario.setNome("admin");
                     usuario.setEmail("admin@admin.com");
                     usuario.setSenha(passwordEncoder.encode("1234"));
-                    usuario.setPerfil(Usuario.Perfil.ADMIN);
+                    usuario.setPerfil(Perfil.ADMIN);
 
                     usuarioRepository.save(usuario);
                 }
