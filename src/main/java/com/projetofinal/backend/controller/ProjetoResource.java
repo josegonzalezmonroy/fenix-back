@@ -1,4 +1,4 @@
-package com.projetofinal.backend.resources;
+package com.projetofinal.backend.controller;
 
 import java.util.List;
 
@@ -9,21 +9,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projetofinal.backend.entities.Usuario;
-import com.projetofinal.backend.services.UsuarioService;
+import com.projetofinal.backend.entities.Projeto;
+import com.projetofinal.backend.services.ProjetoService;
 
 @RestController
-@RequestMapping("/usuarios")
-public class UsuarioResource {
+@RequestMapping("/projetos")
+public class ProjetoResource {
 
     @Autowired
-    private UsuarioService usuarioService;
+    private ProjetoService projetoService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")////// PARA CONTROLAR AS PERMISSOES ///////
-    public ResponseEntity<List<Usuario>> getUsuarios()
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    public ResponseEntity<List<Projeto>> getUsuarios()
     {
-        List<Usuario> lista = usuarioService.getAllUsers();
+        List<Projeto> lista = projetoService.getAllProjects();
 
         return ResponseEntity.ok().body(lista);
     }

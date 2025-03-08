@@ -1,4 +1,4 @@
-package com.projetofinal.backend.resources.dto;
+package com.projetofinal.backend.controller.dto.login;
 
 public record LoginRequest(String email, String senha) {
 }
