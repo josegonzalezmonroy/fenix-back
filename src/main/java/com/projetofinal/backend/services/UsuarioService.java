@@ -15,7 +15,7 @@ public interface UsuarioService {
 
     public boolean login(LoginRequest loginRequest, PasswordEncoder passwordEncoder);
 
-    public Usuario save(Usuario usuario);
+    public void save(Usuario usuario);
 
     public void update(Usuario usuario);
 

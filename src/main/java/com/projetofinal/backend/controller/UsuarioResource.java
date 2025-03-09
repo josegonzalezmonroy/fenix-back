@@ -71,11 +71,11 @@ public class UsuarioResource {
     @PostMapping
     public ResponseEntity<String> saveUsuario(@Valid @RequestBody UsuarioCreateDTO dto) {
         try {
-            usuarioService.save(mapperService.usuarioRequestDTOToUsuario(dto));
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            usuarioService.save(mapperService.usuarioCreateDTOToUsuario(dto));
+            return ResponseEntity.status(HttpStatus.CREATED).body("Usuário criado com sucesso!");
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("E-mail já cadastrado.");
+                    .body("E-mail já cadastrado");
         }
     }
 
@@ -88,12 +88,12 @@ public class UsuarioResource {
 
             usuarioService.update(editUsuario);
 
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.status(HttpStatus.OK).body("Usuário modificado com sucesso!");
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("E-mail já cadastrado.");
+                    .body("E-mail já cadastrado");
         }
     }
 
@@ -101,7 +101,7 @@ public class UsuarioResource {
     public ResponseEntity<String> deleteUsuario(@PathVariable Long id) {
         try {
             usuarioService.desativarUsuario(id);
-            return ResponseEntity.ok("Usuário deletado com sucesso.");
+            return ResponseEntity.ok("Usuário deletado com sucesso!");
         } catch (UserAlreadyDisabledException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (NoSuchElementException e) {
