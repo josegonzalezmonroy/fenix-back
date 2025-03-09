@@ -5,7 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.projetofinal.backend.controller.dto.UsuarioEditDTO;
-import com.projetofinal.backend.controller.dto.UsuarioRequestDTO;
+import com.projetofinal.backend.controller.dto.UsuarioCreateDTO;
 import com.projetofinal.backend.entities.Usuario;
 import com.projetofinal.backend.services.MapperService;
 
@@ -16,7 +16,7 @@ public class MapperServiceImpl implements MapperService{
     private BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public Usuario usuarioRequestDTOToUsuario(UsuarioRequestDTO dto) {
+    public Usuario usuarioRequestDTOToUsuario(UsuarioCreateDTO dto) {
         Usuario usuario = new Usuario();
             
         usuario.setNome(dto.getNome());
