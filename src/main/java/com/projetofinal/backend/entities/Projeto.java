@@ -63,6 +63,9 @@ public class Projeto implements Serializable {
     @ManyToMany(mappedBy = "projetos")
     private List<Usuario> usuarios;
 
+    public Projeto() {
+    }
+
     public Long getId() {
         return id;
     }

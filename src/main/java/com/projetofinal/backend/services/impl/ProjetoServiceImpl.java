@@ -21,4 +21,8 @@ public class ProjetoServiceImpl implements ProjetoService{
         return projetoRepository.findAll();
     }
 
+    @Override
+    public void save(Projeto projeto) {
+        projetoRepository.save(projeto);
+    }
 }
