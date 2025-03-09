@@ -41,14 +41,19 @@
 
 
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.datatype</groupId>
+		    <artifactId>jackson-datatype-jsr310</artifactId>
+		    <version>2.18.3</version>
+		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/com.nimbusds/nimbus-jose-jwt -->
 		<dependency>
 		    <groupId>com.nimbusds</groupId>
 		    <artifactId>nimbus-jose-jwt</artifactId>
 		    <version>10.0.2</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/io.github.cdimascio/dotenv-java -->
 		<dependency>
 		    <groupId>io.github.cdimascio</groupId>
 		    <artifactId>dotenv-java</artifactId>
