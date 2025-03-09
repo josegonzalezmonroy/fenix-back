@@ -18,9 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projetofinal.backend.controller.dto.UsuarioEditDTO;
-import com.projetofinal.backend.controller.dto.UsuarioRequestDTO;
+import com.projetofinal.backend.controller.dto.UsuarioCreateDTO;
 import com.projetofinal.backend.entities.Usuario;
 import com.projetofinal.backend.exceptions.UserAlreadyDisabledException;
+import com.projetofinal.backend.repositories.UsuarioRepository;
 import com.projetofinal.backend.services.MapperService;
 import com.projetofinal.backend.services.UsuarioService;
 
@@ -35,6 +36,9 @@ public class UsuarioResource {
     private UsuarioService usuarioService;
 
     @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
     private MapperService mapperService;
 
     @GetMapping
@@ -47,7 +51,8 @@ public class UsuarioResource {
     @GetMapping("{id}")
     public ResponseEntity<Object> getUsuarioById(@PathVariable Long id) {
         try {
-            Usuario usuario = usuarioService.findById(id);
+            Usuario usuario = usuarioRepository.findById(id)
+                    .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado"));
 
             return ResponseEntity.ok().body(usuario);
 
@@ -64,7 +69,7 @@ public class UsuarioResource {
     }
 
     @PostMapping
-    public ResponseEntity<String> saveUsuario(@Valid @RequestBody UsuarioRequestDTO dto) {
+    public ResponseEntity<String> saveUsuario(@Valid @RequestBody UsuarioCreateDTO dto) {
         try {
             usuarioService.save(mapperService.usuarioRequestDTOToUsuario(dto));
             return ResponseEntity.status(HttpStatus.CREATED).build();

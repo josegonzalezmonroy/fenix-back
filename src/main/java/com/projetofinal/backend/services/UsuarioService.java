@@ -17,8 +17,6 @@ public interface UsuarioService {
 
     public Usuario save(Usuario usuario);
 
-    public Usuario findById(Long id);
-
     public void update(Usuario usuario);
 
     public void desativarUsuario(Long id);

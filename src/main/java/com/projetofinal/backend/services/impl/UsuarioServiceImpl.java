@@ -5,7 +5,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -50,14 +49,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Usuario findById(Long id) {
-        return usuarioRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado"));
-    }
-
-    @Override
     public void update(Usuario usuario) {
-        Usuario usuarioAtual = this.findById(usuario.getId());
+        Usuario usuarioAtual = usuarioRepository.findById(usuario.getId())
+        .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado"));
 
         usuarioAtual.setNome(usuario.getNome());
         usuarioAtual.setEmail(usuario.getEmail());
