@@ -138,7 +138,7 @@ public class Projeto implements Serializable {
         this.prioridade = prioridade;
     }
 
-    public boolean isAtivo() {
+    public boolean getAtivo() {
         return ativo;
     }
 

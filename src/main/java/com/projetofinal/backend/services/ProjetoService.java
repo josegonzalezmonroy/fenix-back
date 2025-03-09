@@ -11,4 +11,6 @@ public interface ProjetoService {
 
     public void update(Projeto projeto);
 
+    public void desativarProjeto(Long id);
+
 }

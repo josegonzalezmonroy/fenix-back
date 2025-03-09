@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.projetofinal.backend.entities.Projeto;
 import com.projetofinal.backend.entities.Usuario;
+import com.projetofinal.backend.exceptions.UserAlreadyDisabledException;
 import com.projetofinal.backend.repositories.ProjetoRepository;
 import com.projetofinal.backend.repositories.UsuarioRepository;
 import com.projetofinal.backend.services.ProjetoService;
@@ -59,5 +60,18 @@ public class ProjetoServiceImpl implements ProjetoService {
         projetoAtual.setUsuarioResponsavel(projeto.getUsuarioResponsavel());
 
         projetoRepository.save(projetoAtual);
+    }
+
+        @Override
+    public void desativarProjeto(Long id) {
+        Projeto projeto = projetoRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Projeto não encontrado."));
+
+        if (!projeto.getAtivo()) {
+            throw new UserAlreadyDisabledException("Projeto já está desativado.");
+        }
+
+        projeto.setAtivo(false);
+        projetoRepository.save(projeto);
     }
 }
