@@ -22,5 +22,4 @@ public interface UsuarioService {
     public void desativarUsuario(Long id);
 
     public Usuario findUserById(Long id);
-
 }

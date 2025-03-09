@@ -2,6 +2,7 @@ package com.projetofinal.backend.controller;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projetofinal.backend.controller.dto.UsuarioEditDTO;
+import com.projetofinal.backend.controller.dto.usuario.UsuarioSimplificadoDTO;
 import com.projetofinal.backend.controller.dto.UsuarioCreateDTO;
 import com.projetofinal.backend.entities.Usuario;
 import com.projetofinal.backend.exceptions.UserAlreadyDisabledException;
@@ -42,10 +44,11 @@ public class UsuarioResource {
     private MapperService mapperService;
 
     @GetMapping
-    public ResponseEntity<List<Usuario>> getUsuarios() {
-        List<Usuario> lista = usuarioService.getAllUsers();
+    public ResponseEntity<List<UsuarioSimplificadoDTO>> getAllUsers() {
+        List<UsuarioSimplificadoDTO> listaDTO = usuarioService.getAllUsers().stream()
+                .map(mapperService::usuarioToUsuarioSimplificadoDTO).collect(Collectors.toList());
 
-        return ResponseEntity.ok().body(lista);
+        return ResponseEntity.ok().body(listaDTO);
     }
 
     @GetMapping("{id}")
@@ -62,10 +65,11 @@ public class UsuarioResource {
     }
 
     @GetMapping("inativos")
-    public ResponseEntity<List<Usuario>> getUsuariosInativos() {
-        List<Usuario> lista = usuarioService.getAllInactiveUsers();
+    public ResponseEntity<List<UsuarioSimplificadoDTO>> getUsuariosInativos() {
+        List<UsuarioSimplificadoDTO> listaDTO = usuarioService.getAllInactiveUsers().stream()
+                .map(mapperService::usuarioToUsuarioSimplificadoDTO).collect(Collectors.toList());
 
-        return ResponseEntity.ok().body(lista);
+        return ResponseEntity.ok().body(listaDTO);
     }
 
     @PostMapping

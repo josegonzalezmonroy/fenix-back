@@ -1,12 +1,15 @@
 package com.projetofinal.backend.services.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.projetofinal.backend.controller.dto.UsuarioEditDTO;
+import com.projetofinal.backend.controller.dto.projeto.ProjetoSimplificadoDTO;
+import com.projetofinal.backend.controller.dto.usuario.UsuarioSimplificadoDTO;
 import com.projetofinal.backend.controller.dto.ProjetoCreateDTO;
 import com.projetofinal.backend.controller.dto.ProjetoEditDTO;
 import com.projetofinal.backend.controller.dto.UsuarioCreateDTO;
@@ -27,7 +30,6 @@ public class MapperServiceImpl implements MapperService {
 
     @Autowired
     private UsuarioService usuarioService;
-
 
     @Override
     public Usuario usuarioCreateDTOToUsuario(UsuarioCreateDTO dto) {
@@ -93,4 +95,20 @@ public class MapperServiceImpl implements MapperService {
         return projeto;
     }
 
+    @Override
+    public UsuarioSimplificadoDTO usuarioToUsuarioSimplificadoDTO(Usuario usuario)
+    {
+        List<ProjetoSimplificadoDTO> projetosDTO = usuario.getProjetos().stream().map(projeto->projetoToProjetoSimplificadoDTO(projeto)).collect(Collectors.toList());
+
+        UsuarioSimplificadoDTO dto = new UsuarioSimplificadoDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getAtivo(), projetosDTO);
+
+        return dto;
+    }
+
+    public ProjetoSimplificadoDTO projetoToProjetoSimplificadoDTO(Projeto projeto)
+    {
+        ProjetoSimplificadoDTO dto = new ProjetoSimplificadoDTO(projeto.getId(), projeto.getNome(), projeto.getAtivo());
+
+        return dto;
+    }
 }
