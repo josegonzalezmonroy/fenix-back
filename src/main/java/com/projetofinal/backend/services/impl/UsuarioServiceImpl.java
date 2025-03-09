@@ -73,4 +73,12 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setAtivo(false);
         usuarioRepository.save(usuario);
     }
+
+    @Override
+    public Usuario findUserById(Long id)
+    {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Usuário não encontrado."));
+
+        return usuario;
+    }
 }

@@ -1,7 +1,6 @@
 package com.projetofinal.backend.controller.dto;
 
 import java.time.Instant;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.projetofinal.backend.entities.Models.Prioridade;
@@ -11,10 +10,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-public class ProjetoCreateDTO {
+public class ProjetoEditDTO {
 
     @NotBlank(message = "O nome é obrigatório")
     @Column(nullable = false)
@@ -49,11 +47,7 @@ public class ProjetoCreateDTO {
     @Column(nullable = false)
     private Long idUsuarioResponsavel;
 
-    @NotEmpty(message="A lista deve conter pelo menos um usuário")
-    private List<Long> usuarios;
-
-    public ProjetoCreateDTO(String nome, String descricao, Instant dataInicio, Instant dataFim, Status status,
-            Prioridade prioridade, Long idUsuarioResponsavel, List<Long> usuarios) {
+    public ProjetoEditDTO(String nome, String descricao, Instant dataInicio, Instant dataFim, Status status, Prioridade prioridade, Long idUsuarioResponsavel) {
         this.nome = nome;
         this.descricao = descricao;
         this.dataInicio = dataInicio;
@@ -61,7 +55,6 @@ public class ProjetoCreateDTO {
         this.status = status;
         this.prioridade = prioridade;
         this.idUsuarioResponsavel = idUsuarioResponsavel;
-        this.usuarios = usuarios;
     }
 
     public String getNome() {
@@ -90,9 +83,5 @@ public class ProjetoCreateDTO {
 
     public Long getIdUsuarioResponsavel() {
         return idUsuarioResponsavel;
-    }
-
-    public List<Long> getUsuarios() {
-        return usuarios;
     }
 }

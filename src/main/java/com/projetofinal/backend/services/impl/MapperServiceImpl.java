@@ -1,16 +1,20 @@
 package com.projetofinal.backend.services.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.projetofinal.backend.controller.dto.UsuarioEditDTO;
 import com.projetofinal.backend.controller.dto.ProjetoCreateDTO;
+import com.projetofinal.backend.controller.dto.ProjetoEditDTO;
 import com.projetofinal.backend.controller.dto.UsuarioCreateDTO;
 import com.projetofinal.backend.entities.Projeto;
 import com.projetofinal.backend.entities.Usuario;
 import com.projetofinal.backend.repositories.UsuarioRepository;
 import com.projetofinal.backend.services.MapperService;
+import com.projetofinal.backend.services.UsuarioService;
 
 @Service
 public class MapperServiceImpl implements MapperService {
@@ -20,6 +24,10 @@ public class MapperServiceImpl implements MapperService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
 
     @Override
     public Usuario usuarioCreateDTOToUsuario(UsuarioCreateDTO dto) {
@@ -55,11 +63,33 @@ public class MapperServiceImpl implements MapperService {
         projeto.setStatus(dto.getStatus());
         projeto.setPrioridade(dto.getPrioridade());
 
-        Usuario usuarioResponsavel = usuarioRepository.findById(dto.getIdUsuarioResponsavel())
-                .orElseThrow(() -> new RuntimeException("Usuário responsável não encontrado"));
+        Usuario usuarioResponsavel = usuarioService.findUserById(dto.getIdUsuarioResponsavel());
 
         projeto.setUsuarioResponsavel(usuarioResponsavel);
 
+        List<Usuario> usuarios = usuarioRepository.findAllById(dto.getUsuarios());
+
+        projeto.setUsuarios(usuarios);
+
+        return projeto;
+    }
+
+    @Override
+    public Projeto projetoEditDTOToProjeto(ProjetoEditDTO dto)
+    {
+        Projeto projeto = new Projeto();
+
+        projeto.setNome(dto.getNome());
+        projeto.setDescricao(dto.getDescricao());
+        projeto.setDataInicio(dto.getDataInicio());
+        projeto.setDataFim(dto.getDataFim());
+        projeto.setStatus(dto.getStatus());
+        projeto.setPrioridade(dto.getPrioridade());
+
+        Usuario usuarioResponsavel = usuarioService.findUserById(dto.getIdUsuarioResponsavel());
+
+        projeto.setUsuarioResponsavel(usuarioResponsavel);
+        
         return projeto;
     }
 
