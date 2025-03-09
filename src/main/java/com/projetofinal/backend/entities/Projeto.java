@@ -5,7 +5,7 @@ import java.time.Instant;
 import java.util.List;
 
 import com.projetofinal.backend.entities.Models.Prioridade;
-import com.projetofinal.backend.entities.Models.StatusProjeto;
+import com.projetofinal.backend.entities.Models.Status;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,7 +42,7 @@ public class Projeto implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private StatusProjeto status;
+    private Status status;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario_responsavel", nullable = false)
@@ -103,11 +103,11 @@ public class Projeto implements Serializable {
         this.dataFim = dataFim;
     }
 
-    public StatusProjeto getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(StatusProjeto status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

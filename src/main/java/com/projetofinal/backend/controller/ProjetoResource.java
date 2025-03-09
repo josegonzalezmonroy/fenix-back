@@ -13,7 +13,7 @@ import com.projetofinal.backend.entities.Projeto;
 import com.projetofinal.backend.services.ProjetoService;
 
 @RestController
-@RequestMapping("/projetos")
+@RequestMapping("projetos")
 public class ProjetoResource {
 
     @Autowired
@@ -21,8 +21,7 @@ public class ProjetoResource {
 
     @GetMapping
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
-    public ResponseEntity<List<Projeto>> getUsuarios()
-    {
+    public ResponseEntity<List<Projeto>> getUsuarios() {
         List<Projeto> lista = projetoService.getAllProjects();
 
         return ResponseEntity.ok().body(lista);
