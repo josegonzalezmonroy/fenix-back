@@ -1,18 +1,18 @@
 package com.projetofinal.backend.services.impl;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.projetofinal.backend.controller.dto.UsuarioEditDTO;
-import com.projetofinal.backend.controller.dto.projeto.ProjetoSimplificadoDTO;
+import com.projetofinal.backend.controller.dto.projeto.ProjetoCreateDTO;
+import com.projetofinal.backend.controller.dto.projeto.ProjetoEditDTO;
+import com.projetofinal.backend.controller.dto.projeto.ProjetoDTO;
+import com.projetofinal.backend.controller.dto.usuario.UsuarioCreateDTO;
+import com.projetofinal.backend.controller.dto.usuario.UsuarioDTO;
+import com.projetofinal.backend.controller.dto.usuario.UsuarioEditDTO;
 import com.projetofinal.backend.controller.dto.usuario.UsuarioSimplificadoDTO;
-import com.projetofinal.backend.controller.dto.ProjetoCreateDTO;
-import com.projetofinal.backend.controller.dto.ProjetoEditDTO;
-import com.projetofinal.backend.controller.dto.UsuarioCreateDTO;
 import com.projetofinal.backend.entities.Projeto;
 import com.projetofinal.backend.entities.Usuario;
 import com.projetofinal.backend.repositories.UsuarioRepository;
@@ -55,6 +55,17 @@ public class MapperServiceImpl implements MapperService {
     }
 
     @Override
+    public UsuarioSimplificadoDTO usuarioToUsuarioSimplificadoDTO(Usuario usuario) {
+        return new UsuarioSimplificadoDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getAtivo(), usuario.getUltimoLogin());
+    }
+
+    @Override 
+    public UsuarioDTO usuarioToUsuarioDTO(Usuario usuario)
+    {
+        return new UsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getDataCriacao(), usuario.getUltimoLogin(), usuario.getAtivo(), usuario.getPerfil());
+    }
+
+    @Override
     public Projeto projetoCreateDTOToProjeto(ProjetoCreateDTO dto) {
         Projeto projeto = new Projeto();
 
@@ -77,8 +88,7 @@ public class MapperServiceImpl implements MapperService {
     }
 
     @Override
-    public Projeto projetoEditDTOToProjeto(ProjetoEditDTO dto)
-    {
+    public Projeto projetoEditDTOToProjeto(ProjetoEditDTO dto) {
         Projeto projeto = new Projeto();
 
         projeto.setNome(dto.getNome());
@@ -91,24 +101,13 @@ public class MapperServiceImpl implements MapperService {
         Usuario usuarioResponsavel = usuarioService.findUserById(dto.getIdUsuarioResponsavel());
 
         projeto.setUsuarioResponsavel(usuarioResponsavel);
-        
+
         return projeto;
     }
 
     @Override
-    public UsuarioSimplificadoDTO usuarioToUsuarioSimplificadoDTO(Usuario usuario)
-    {
-        List<ProjetoSimplificadoDTO> projetosDTO = usuario.getProjetos().stream().map(projeto->projetoToProjetoSimplificadoDTO(projeto)).collect(Collectors.toList());
+    public ProjetoDTO projetoToProjetoSimplificadoDTO(Projeto projeto) {
 
-        UsuarioSimplificadoDTO dto = new UsuarioSimplificadoDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getAtivo(), projetosDTO);
-
-        return dto;
-    }
-
-    public ProjetoSimplificadoDTO projetoToProjetoSimplificadoDTO(Projeto projeto)
-    {
-        ProjetoSimplificadoDTO dto = new ProjetoSimplificadoDTO(projeto.getId(), projeto.getNome(), projeto.getAtivo());
-
-        return dto;
+        return new ProjetoDTO(projeto.getId(), projeto.getNome(), projeto.getDescricao(), projeto.getDataInicio(), projeto.getDataFim(), projeto.getStatus(), usuarioToUsuarioSimplificadoDTO(projeto.getUsuarioResponsavel()), projeto.getDataCriacao(), projeto.getPrioridade(),  projeto.getAtivo());
     }
 }

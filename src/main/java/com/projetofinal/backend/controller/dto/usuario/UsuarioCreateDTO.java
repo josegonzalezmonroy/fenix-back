@@ -1,13 +1,10 @@
-package com.projetofinal.backend.controller.dto;
-
-import com.projetofinal.backend.entities.Models.Perfil;
+package com.projetofinal.backend.controller.dto.usuario;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public class UsuarioEditDTO {
+public class UsuarioCreateDTO {
 
     @NotBlank(message = "O nome é obrigatório")
     @Size(min = 3, max = 100, message = "O nome deve ter entre 2 e 100 caracteres")
@@ -21,14 +18,10 @@ public class UsuarioEditDTO {
     @Size(min = 6, message = "A senha deve ter pelo menos 6 caracteres")
     private String senha;
 
-    @NotNull(message = "O perfil é obrigatório")
-    private Perfil perfil;
-
-    public UsuarioEditDTO(String nome, String email, String senha, Perfil perfil) {
+    public UsuarioCreateDTO(String nome, String email, String senha) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-        this.perfil = perfil;
     }
 
     public String getNome() {
@@ -41,9 +34,5 @@ public class UsuarioEditDTO {
 
     public String getSenha() {
         return senha;
-    }
-
-    public Perfil getPerfil() {
-        return perfil;
     }
 }

@@ -2,6 +2,7 @@ package com.projetofinal.backend.controller;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,12 +17,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projetofinal.backend.controller.dto.ProjetoCreateDTO;
-import com.projetofinal.backend.controller.dto.ProjetoEditDTO;
+import com.projetofinal.backend.controller.dto.projeto.ProjetoCreateDTO;
+import com.projetofinal.backend.controller.dto.projeto.ProjetoEditDTO;
+import com.projetofinal.backend.controller.dto.projeto.ProjetoDTO;
 import com.projetofinal.backend.entities.Projeto;
 import com.projetofinal.backend.exceptions.UserAlreadyDisabledException;
 import com.projetofinal.backend.services.MapperService;
 import com.projetofinal.backend.services.ProjetoService;
+import com.projetofinal.backend.repositories.ProjetoRepository;
 
 import jakarta.validation.Valid;
 
@@ -36,11 +39,29 @@ public class ProjetoResource {
     @Autowired
     private MapperService mapperService;
 
-    @GetMapping
-    public ResponseEntity<List<Projeto>> getUsuarios() {
-        List<Projeto> lista = projetoService.getAllProjects();
+    @Autowired
+    private ProjetoRepository projetoRepository;
 
-        return ResponseEntity.ok().body(lista);
+    @GetMapping
+    public ResponseEntity<List<ProjetoDTO>> getAllProjects() {
+
+        List<ProjetoDTO> listaDTO = projetoService.getAllProjects().stream()
+                .map(mapperService::projetoToProjetoSimplificadoDTO).collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(listaDTO);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Object> getProjetoById(@PathVariable Long id) {
+        try {
+            Projeto projeto = projetoRepository.findById(id)
+                    .orElseThrow(() -> new NoSuchElementException("Projeto não encontrado"));
+
+            return ResponseEntity.ok().body(mapperService.projetoToProjetoSimplificadoDTO(projeto));
+
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @PostMapping

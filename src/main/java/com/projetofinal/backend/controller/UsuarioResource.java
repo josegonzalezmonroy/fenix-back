@@ -18,9 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projetofinal.backend.controller.dto.UsuarioEditDTO;
+import com.projetofinal.backend.controller.dto.usuario.UsuarioCreateDTO;
+import com.projetofinal.backend.controller.dto.usuario.UsuarioDTO;
+import com.projetofinal.backend.controller.dto.usuario.UsuarioEditDTO;
 import com.projetofinal.backend.controller.dto.usuario.UsuarioSimplificadoDTO;
-import com.projetofinal.backend.controller.dto.UsuarioCreateDTO;
 import com.projetofinal.backend.entities.Usuario;
 import com.projetofinal.backend.exceptions.UserAlreadyDisabledException;
 import com.projetofinal.backend.repositories.UsuarioRepository;
@@ -44,9 +45,9 @@ public class UsuarioResource {
     private MapperService mapperService;
 
     @GetMapping
-    public ResponseEntity<List<UsuarioSimplificadoDTO>> getAllUsers() {
-        List<UsuarioSimplificadoDTO> listaDTO = usuarioService.getAllUsers().stream()
-                .map(mapperService::usuarioToUsuarioSimplificadoDTO).collect(Collectors.toList());
+    public ResponseEntity<List<UsuarioDTO>> getAllUsers() {
+        List<UsuarioDTO> listaDTO = usuarioService.getAllUsers().stream()
+                .map(mapperService::usuarioToUsuarioDTO).collect(Collectors.toList());
 
         return ResponseEntity.ok().body(listaDTO);
     }
@@ -57,7 +58,7 @@ public class UsuarioResource {
             Usuario usuario = usuarioRepository.findById(id)
                     .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado"));
 
-            return ResponseEntity.ok().body(usuario);
+            return ResponseEntity.ok().body(mapperService.usuarioToUsuarioDTO(usuario));
 
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -65,10 +66,10 @@ public class UsuarioResource {
     }
 
     @GetMapping("inativos")
-    public ResponseEntity<List<UsuarioSimplificadoDTO>> getUsuariosInativos() {
-        List<UsuarioSimplificadoDTO> listaDTO = usuarioService.getAllInactiveUsers().stream()
-                .map(mapperService::usuarioToUsuarioSimplificadoDTO).collect(Collectors.toList());
-
+    public ResponseEntity<List<UsuarioDTO>> getUsuariosInativos() {
+        List<UsuarioDTO> listaDTO = usuarioService.getAllInactiveUsers().stream()
+                .map(mapperService::usuarioToUsuarioDTO).collect(Collectors.toList());
+            
         return ResponseEntity.ok().body(listaDTO);
     }
 

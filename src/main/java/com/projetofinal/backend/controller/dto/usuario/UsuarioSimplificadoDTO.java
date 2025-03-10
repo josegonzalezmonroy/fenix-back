@@ -1,24 +1,21 @@
 package com.projetofinal.backend.controller.dto.usuario;
 
-import java.util.List;
-
-import com.projetofinal.backend.controller.dto.projeto.ProjetoSimplificadoDTO;
+import java.time.Instant;
 
 public class UsuarioSimplificadoDTO {
 
     private Long id;
     private String nome;
     private String email;
-    private Boolean ativo = true;
-    private List<ProjetoSimplificadoDTO> projetos;
+    private boolean ativo;
+    private Instant ultimoLogin;
 
-    public UsuarioSimplificadoDTO(Long id, String nome, String email, Boolean ativo,
-            List<ProjetoSimplificadoDTO> projetos) {
+    public UsuarioSimplificadoDTO(Long id, String nome, String email, boolean ativo, Instant ultimoLogin) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.ativo = ativo;
-        this.projetos = projetos;
+        this.ultimoLogin = ultimoLogin;
     }
 
     public Long getId() {
@@ -33,11 +30,11 @@ public class UsuarioSimplificadoDTO {
         return email;
     }
 
-    public Boolean getAtivo() {
+    public boolean getAtivo() {
         return ativo;
     }
 
-    public List<ProjetoSimplificadoDTO> getProjetos() {
-        return projetos;
+    public Instant getUltimoLogin(){
+        return ultimoLogin;
     }
 }
