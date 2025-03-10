@@ -1,12 +1,15 @@
 package com.projetofinal.backend.controller;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projetofinal.backend.controller.dto.lancamentos.LancamentoCreateDTO;
+import com.projetofinal.backend.controller.dto.lancamentos.LancamentoDTO;
 import com.projetofinal.backend.controller.dto.lancamentos.LancamentoEditDTO;
 import com.projetofinal.backend.entities.LancamentosHoras;
 import com.projetofinal.backend.exceptions.AlreadyDisabledException;
@@ -41,6 +45,38 @@ public class LancamentoResource {
 
     @Autowired
     private ValidatorService validatorService;
+
+    @GetMapping
+    public ResponseEntity<List<LancamentoDTO>> getAllLancamentos()
+    {
+        List<LancamentoDTO> listaDTO = lancamentoService.getAllLancamentos(true).stream().map(
+            mapperService::lancamentosHorasToLancamentoDTO
+        ).collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(listaDTO);
+    }
+
+    @GetMapping("inativos")
+    public ResponseEntity<List<LancamentoDTO>> getAllInactiveLancamentos()
+    {
+        List<LancamentoDTO> listaDTO = lancamentoService.getAllLancamentos(false).stream().map(
+            mapperService::lancamentosHorasToLancamentoDTO
+        ).collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(listaDTO);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Object> getAtividadeById(@PathVariable Long id) {
+        try {
+            LancamentosHoras lancamentos = lancamentoRepository.findById(id)
+                    .orElseThrow(() -> new NoSuchElementException("Lançamento não encontrado"));
+
+            return ResponseEntity.ok().body(mapperService.lancamentosHorasToLancamentoDTO(lancamentos));
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
     @PostMapping
     public ResponseEntity<String> saveLancamento(@Valid @RequestBody LancamentoCreateDTO dto) {

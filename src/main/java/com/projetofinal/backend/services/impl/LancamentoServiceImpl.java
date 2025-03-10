@@ -1,5 +1,6 @@
 package com.projetofinal.backend.services.impl;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,11 @@ public class LancamentoServiceImpl implements LancamentoService{
 
         lancamento.setAtivo(false);
         lancamentoRepository.save(lancamento);        
+    }
+
+    @Override
+    public List<LancamentosHoras> getAllLancamentos(boolean ativo) {
+        return lancamentoRepository.findByAtivo(ativo);
     }
     
 }
