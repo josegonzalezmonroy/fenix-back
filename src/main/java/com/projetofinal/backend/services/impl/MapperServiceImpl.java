@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.projetofinal.backend.controller.dto.atividade.AtividadeCreateDTO;
+import com.projetofinal.backend.controller.dto.atividade.AtividadeEditDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoCreateDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoEditDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoDTO;
@@ -132,6 +133,19 @@ public class MapperServiceImpl implements MapperService {
         atividade.setStatus(dto.getStatus());
         atividade.setProjeto(projeto);
         atividade.setUsuarios(usuarios);
+
+        return atividade;
+    }
+
+    @Override
+    public Atividade atividadeEditDTOtoAtividade(AtividadeEditDTO dto){
+        Atividade atividade = new Atividade();
+
+        atividade.setNome(dto.getNome());
+        atividade.setDescricao(dto.getDescricao());
+        atividade.setDataInicio(dto.getDataInicio());
+        atividade.setDataFim(dto.getDataFim());
+        atividade.setStatus(dto.getStatus());
 
         return atividade;
     }

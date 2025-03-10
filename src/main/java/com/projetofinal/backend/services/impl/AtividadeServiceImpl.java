@@ -1,6 +1,7 @@
 package com.projetofinal.backend.services.impl;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,20 @@ public class AtividadeServiceImpl implements AtividadeService {
             atividade.getUsuarios().add(usuario);
             usuarioRepository.save(usuario);
         }
+    }
+
+    @Override
+    public void update(Atividade atividade) {
+        Atividade atividadeAtual = atividadeRepository.findById(atividade.getId())
+                .orElseThrow(() -> new NoSuchElementException("Atividade não encontrada"));
+
+        atividadeAtual.setNome(atividade.getNome());
+        atividadeAtual.setDescricao(atividade.getDescricao());
+        atividadeAtual.setDataInicio(atividade.getDataInicio());
+        atividadeAtual.setDataFim(atividade.getDataFim());
+        atividadeAtual.setStatus(atividade.getStatus());
+
+        atividadeRepository.save(atividadeAtual);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.projetofinal.backend.services;
 
 import com.projetofinal.backend.controller.dto.atividade.AtividadeCreateDTO;
+import com.projetofinal.backend.controller.dto.atividade.AtividadeEditDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoCreateDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoEditDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoDTO;
@@ -29,4 +30,6 @@ public interface MapperService {
     public UsuarioDTO usuarioToUsuarioDTO(Usuario usuario);
 
     public Atividade atividadeCreateDTOToAtividade(AtividadeCreateDTO dto);
+
+    public Atividade atividadeEditDTOtoAtividade(AtividadeEditDTO dto);
 }
