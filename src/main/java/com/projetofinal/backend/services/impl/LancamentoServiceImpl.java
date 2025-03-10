@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.projetofinal.backend.entities.LancamentosHoras;
+import com.projetofinal.backend.exceptions.AlreadyDisabledException;
 import com.projetofinal.backend.repositories.LancamentoRepository;
 import com.projetofinal.backend.services.LancamentoService;
 
@@ -26,6 +27,20 @@ public class LancamentoServiceImpl implements LancamentoService{
         lancamentoAtual.setDataFim(lancamentoEdit.getDataFim());
 
         lancamentoRepository.save(lancamentoAtual);
+    }
+
+    @Override
+    public void desativarLancamento(Long id) {
+
+        LancamentosHoras lancamento = lancamentoRepository.findById(id).orElseThrow(()->new NoSuchElementException("Lançamento não encontrado"));
+
+        if (!lancamento.getAtivo())
+        {
+            throw new AlreadyDisabledException("Lançamento já está desativado");
+        }
+
+        lancamento.setAtivo(false);
+        lancamentoRepository.save(lancamento);        
     }
     
 }

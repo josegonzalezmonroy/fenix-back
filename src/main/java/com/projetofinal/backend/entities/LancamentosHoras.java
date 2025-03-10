@@ -98,7 +98,7 @@ public class LancamentosHoras implements Serializable{
         this.dataRegistro = dataRegistro;
     }
 
-    public boolean isAtivo() {
+    public boolean getAtivo() {
         return ativo;
     }
 

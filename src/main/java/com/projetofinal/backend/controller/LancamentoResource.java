@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projetofinal.backend.controller.dto.lancamentos.LancamentoCreateDTO;
 import com.projetofinal.backend.controller.dto.lancamentos.LancamentoEditDTO;
 import com.projetofinal.backend.entities.LancamentosHoras;
+import com.projetofinal.backend.exceptions.AlreadyDisabledException;
 import com.projetofinal.backend.repositories.LancamentoRepository;
 import com.projetofinal.backend.services.LancamentoService;
 import com.projetofinal.backend.services.MapperService;
@@ -70,6 +72,18 @@ public class LancamentoResource {
 
             return ResponseEntity.status(HttpStatus.OK).body("Lancamento modificado com sucesso!");
 
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteLancamento(@PathVariable Long id) {
+        try {
+            lancamentoService.desativarLancamento(id);
+            return ResponseEntity.ok("Lançamento desativado com sucesso!");
+        } catch (AlreadyDisabledException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
