@@ -13,4 +13,6 @@ public interface AtividadeService {
     public void update(Atividade atividade);
 
     public void desativarAtividade(Long id);
+
+    public Atividade findActivityById(Long id);
 }

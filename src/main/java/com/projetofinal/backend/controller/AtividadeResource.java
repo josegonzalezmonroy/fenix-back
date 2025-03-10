@@ -83,7 +83,7 @@ public class AtividadeResource {
 
             atividadeService.save(atividade, dto.getUsuariosId());
 
-            return ResponseEntity.status(HttpStatus.CREATED).body("Atvidade criada com sucesso!");
+            return ResponseEntity.status(HttpStatus.CREATED).body("Atividade criada com sucesso!");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)

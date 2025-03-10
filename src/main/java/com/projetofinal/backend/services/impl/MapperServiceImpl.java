@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.projetofinal.backend.controller.dto.atividade.AtividadeCreateDTO;
 import com.projetofinal.backend.controller.dto.atividade.AtividadeDTO;
 import com.projetofinal.backend.controller.dto.atividade.AtividadeEditDTO;
+import com.projetofinal.backend.controller.dto.lancamentos.LancamentoCreateDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoCreateDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoEditDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoDTO;
@@ -17,9 +18,11 @@ import com.projetofinal.backend.controller.dto.usuario.UsuarioDTO;
 import com.projetofinal.backend.controller.dto.usuario.UsuarioEditDTO;
 import com.projetofinal.backend.controller.dto.usuario.UsuarioSimplificadoDTO;
 import com.projetofinal.backend.entities.Atividade;
+import com.projetofinal.backend.entities.LancamentosHoras;
 import com.projetofinal.backend.entities.Projeto;
 import com.projetofinal.backend.entities.Usuario;
 import com.projetofinal.backend.repositories.UsuarioRepository;
+import com.projetofinal.backend.services.AtividadeService;
 import com.projetofinal.backend.services.MapperService;
 import com.projetofinal.backend.services.ProjetoService;
 import com.projetofinal.backend.services.UsuarioService;
@@ -38,6 +41,9 @@ public class MapperServiceImpl implements MapperService {
 
     @Autowired
     private ProjetoService projetoService;
+
+    @Autowired
+    private AtividadeService atividadeService;
 
     @Override
     public Usuario usuarioCreateDTOToUsuario(UsuarioCreateDTO dto) {
@@ -64,13 +70,14 @@ public class MapperServiceImpl implements MapperService {
 
     @Override
     public UsuarioSimplificadoDTO usuarioToUsuarioSimplificadoDTO(Usuario usuario) {
-        return new UsuarioSimplificadoDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getAtivo(), usuario.getUltimoLogin());
+        return new UsuarioSimplificadoDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getAtivo(),
+                usuario.getUltimoLogin());
     }
 
-    @Override 
-    public UsuarioDTO usuarioToUsuarioDTO(Usuario usuario)
-    {
-        return new UsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getDataCriacao(), usuario.getUltimoLogin(), usuario.getAtivo(), usuario.getPerfil());
+    @Override
+    public UsuarioDTO usuarioToUsuarioDTO(Usuario usuario) {
+        return new UsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getDataCriacao(),
+                usuario.getUltimoLogin(), usuario.getAtivo(), usuario.getPerfil());
     }
 
     @Override
@@ -116,7 +123,10 @@ public class MapperServiceImpl implements MapperService {
     @Override
     public ProjetoDTO projetoToProjetoDTO(Projeto projeto) {
 
-        return new ProjetoDTO(projeto.getId(), projeto.getNome(), projeto.getDescricao(), projeto.getDataInicio(), projeto.getDataFim(), projeto.getStatus(), usuarioToUsuarioSimplificadoDTO(projeto.getUsuarioResponsavel()), projeto.getDataCriacao(), projeto.getPrioridade(),  projeto.getAtivo());
+        return new ProjetoDTO(projeto.getId(), projeto.getNome(), projeto.getDescricao(), projeto.getDataInicio(),
+                projeto.getDataFim(), projeto.getStatus(),
+                usuarioToUsuarioSimplificadoDTO(projeto.getUsuarioResponsavel()), projeto.getDataCriacao(),
+                projeto.getPrioridade(), projeto.getAtivo());
     }
 
     @Override
@@ -139,7 +149,7 @@ public class MapperServiceImpl implements MapperService {
     }
 
     @Override
-    public Atividade atividadeEditDTOtoAtividade(AtividadeEditDTO dto){
+    public Atividade atividadeEditDTOtoAtividade(AtividadeEditDTO dto) {
         Atividade atividade = new Atividade();
 
         atividade.setNome(dto.getNome());
@@ -151,11 +161,29 @@ public class MapperServiceImpl implements MapperService {
         return atividade;
     }
 
-    @Override 
-    public AtividadeDTO atividadeToAtividadeDTO(Atividade atividade)
-    {
+    @Override
+    public AtividadeDTO atividadeToAtividadeDTO(Atividade atividade) {
         ProjetoDTO projetoDTO = projetoToProjetoDTO(projetoService.findProjectById(atividade.getProjeto().getId()));
 
-        return new AtividadeDTO(atividade.getId(), atividade.getNome(), atividade.getDescricao(), atividade.getDataInicio(), atividade.getDataFim(), atividade.getStatus(), atividade.getDataCriacao(), atividade.getAtivo(), projetoDTO);
+        return new AtividadeDTO(atividade.getId(), atividade.getNome(), atividade.getDescricao(),
+                atividade.getDataInicio(), atividade.getDataFim(), atividade.getStatus(), atividade.getDataCriacao(),
+                atividade.getAtivo(), projetoDTO);
+    }
+
+    @Override
+    public LancamentosHoras lancamentoCreateDTOToLancamentos(LancamentoCreateDTO dto) {
+        LancamentosHoras lancamento = new LancamentosHoras();
+
+        Atividade atividade = atividadeService.findActivityById(dto.getAtividade());
+
+        Usuario usuario = usuarioService.findUserById(dto.getUsuario());
+
+        lancamento.setDescricao(dto.getDescricao());
+        lancamento.setDataInicio(dto.getDataInicio());
+        lancamento.setDataFim(dto.getDataFim());
+        lancamento.setAtividade(atividade);
+        lancamento.setUsuario(usuario);
+
+        return lancamento;
     }
 }
