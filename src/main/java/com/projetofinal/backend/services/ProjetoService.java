@@ -13,4 +13,6 @@ public interface ProjetoService {
 
     public void desativarProjeto(Long id);
 
+    public Projeto findProjectById(Long id);
+
 }

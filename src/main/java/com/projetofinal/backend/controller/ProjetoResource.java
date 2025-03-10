@@ -24,6 +24,7 @@ import com.projetofinal.backend.entities.Projeto;
 import com.projetofinal.backend.exceptions.UserAlreadyDisabledException;
 import com.projetofinal.backend.services.MapperService;
 import com.projetofinal.backend.services.ProjetoService;
+import com.projetofinal.backend.services.ValidatorService;
 import com.projetofinal.backend.repositories.ProjetoRepository;
 
 import jakarta.validation.Valid;
@@ -41,6 +42,9 @@ public class ProjetoResource {
 
     @Autowired
     private ProjetoRepository projetoRepository;
+
+    @Autowired
+    private ValidatorService validatorService;
 
     @GetMapping
     public ResponseEntity<List<ProjetoDTO>> getAllProjects() {
@@ -67,6 +71,9 @@ public class ProjetoResource {
     @PostMapping
     public ResponseEntity<String> saveProjeto(@Valid @RequestBody ProjetoCreateDTO dto) {
         try {
+
+            validatorService.validateData(dto.getDataInicio(), dto.getDataFim());
+
             Projeto projeto = mapperService.projetoCreateDTOToProjeto(dto);
 
             projetoService.save(projeto, dto.getUsuarios());

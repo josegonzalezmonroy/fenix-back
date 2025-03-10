@@ -1,19 +1,18 @@
-package com.projetofinal.backend.controller.dto.projeto;
+package com.projetofinal.backend.controller.dto.atividade;
 
 import java.time.Instant;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.projetofinal.backend.entities.Models.Prioridade;
-import com.projetofinal.backend.entities.Models.StatusProjeto;
+import com.projetofinal.backend.entities.Models.StatusAtividade;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
-public class ProjetoCreateDTO {
+public class AtividadeCreateDTO {
 
     @NotBlank(message = "O nome é obrigatório")
     private String nome;
@@ -31,28 +30,23 @@ public class ProjetoCreateDTO {
 
     @NotNull(message = "Status obrigatório")
     @Enumerated(EnumType.STRING)
-    private StatusProjeto status;
+    private StatusAtividade status;
 
-    @NotNull(message = "Prioridade obrigatória")
-    @Enumerated(EnumType.STRING)
-    private Prioridade prioridade;
+    @NotNull(message = "Projeto obrigatório")
+    private Long projeto;
 
-    @JsonProperty("id_usuario_responsavel")
-    @NotNull(message = "Usuário responsável obrigatório")
-    private Long idUsuarioResponsavel;
-
-    @NotEmpty(message = "A lista deve conter pelo menos um usuário")
+    @NotNull(message = "A lista de usuários é obrigatória")
+    @Size(min = 1, message = "A lista de usuários deve conter pelo menos um usuário")
     private List<Long> usuarios;
 
-    public ProjetoCreateDTO(String nome, String descricao, Instant dataInicio, Instant dataFim, StatusProjeto status,
-            Prioridade prioridade, Long idUsuarioResponsavel, List<Long> usuarios) {
+    public AtividadeCreateDTO(String nome, String descricao, Instant dataInicio, Instant dataFim,
+            StatusAtividade status, Long projeto, List<Long> usuarios) {
         this.nome = nome;
         this.descricao = descricao;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.status = status;
-        this.prioridade = prioridade;
-        this.idUsuarioResponsavel = idUsuarioResponsavel;
+        this.projeto = projeto;
         this.usuarios = usuarios;
     }
 
@@ -72,19 +66,15 @@ public class ProjetoCreateDTO {
         return dataFim;
     }
 
-    public StatusProjeto getStatus() {
+    public StatusAtividade getStatus() {
         return status;
     }
 
-    public Prioridade getPrioridade() {
-        return prioridade;
+    public Long getProjeto() {
+        return projeto;
     }
 
-    public Long getIdUsuarioResponsavel() {
-        return idUsuarioResponsavel;
-    }
-
-    public List<Long> getUsuarios() {
+    public List<Long> getUsuariosId() {
         return usuarios;
     }
 }

@@ -41,15 +41,14 @@ public class ProjetoServiceImpl implements ProjetoService {
         for (Usuario usuario : usuarios) {
             usuario.getProjetos().add(projeto);
             projeto.getUsuarios().add(usuario);
-            usuarioRepository.save(usuario); 
+            usuarioRepository.save(usuario);
         }
     }
 
     @Override
-    public void update(Projeto projeto)
-    {
+    public void update(Projeto projeto) {
         Projeto projetoAtual = projetoRepository.findById(projeto.getId())
-        .orElseThrow(() -> new NoSuchElementException("Projeto não encontrado"));
+                .orElseThrow(() -> new NoSuchElementException("Projeto não encontrado"));
 
         projetoAtual.setNome(projeto.getNome());
         projetoAtual.setDescricao(projeto.getDescricao());
@@ -62,7 +61,7 @@ public class ProjetoServiceImpl implements ProjetoService {
         projetoRepository.save(projetoAtual);
     }
 
-        @Override
+    @Override
     public void desativarProjeto(Long id) {
         Projeto projeto = projetoRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Projeto não encontrado."));
@@ -73,5 +72,13 @@ public class ProjetoServiceImpl implements ProjetoService {
 
         projeto.setAtivo(false);
         projetoRepository.save(projeto);
+    }
+
+    @Override
+    public Projeto findProjectById(Long id)
+    {
+        Projeto projeto = projetoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Projeto não encontrado."));
+
+        return projeto;
     }
 }

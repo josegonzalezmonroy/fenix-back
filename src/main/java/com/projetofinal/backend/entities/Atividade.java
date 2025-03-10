@@ -1,9 +1,10 @@
 package com.projetofinal.backend.entities;
 
-import java.time.LocalDate;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
+
+import com.projetofinal.backend.entities.Models.StatusAtividade;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,10 +26,6 @@ public class Atividade implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_projeto", nullable = false)
-    private Projeto projeto;
-
     @Column(nullable = false)
     private String nome;
 
@@ -36,18 +33,14 @@ public class Atividade implements Serializable{
     private String descricao;
 
     @Column(name = "data_inicio", nullable = false)
-    private LocalDate dataInicio;
+    private Instant dataInicio;
 
     @Column(name = "data_fim", nullable = false)
-    private LocalDate dataFim;
+    private Instant dataFim;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StatusAtividade status;
-
-    @ManyToOne
-    @JoinColumn(name = "id_usuario_responsavel")
-    private Usuario usuarioResponsavel;
 
     @Column(name = "data_criacao", nullable = false, updatable = false)
     private Instant dataCriacao = Instant.now();
@@ -55,18 +48,15 @@ public class Atividade implements Serializable{
     @Column(nullable = false)
     private boolean ativo = true;
 
+    @ManyToOne
+    @JoinColumn(name = "id_projeto", nullable = false)
+    private Projeto projeto;
+
     @OneToMany(mappedBy = "atividade")
     private List<LancamentosHoras> lancamentosHoras;
 
     @ManyToMany(mappedBy = "atividades")
     private List<Usuario> usuarios;
-
-    public enum StatusAtividade{
-       ABERTA,
-       EM_ANDAMENTO,
-       PAUSADA,
-       CONCLUIDA 
-    }
 
     public Long getId() {
         return id;
@@ -100,19 +90,19 @@ public class Atividade implements Serializable{
         this.descricao = descricao;
     }
 
-    public LocalDate getDataInicio() {
+    public Instant getDataInicio() {
         return dataInicio;
     }
 
-    public void setDataInicio(LocalDate dataInicio) {
+    public void setDataInicio(Instant dataInicio) {
         this.dataInicio = dataInicio;
     }
 
-    public LocalDate getDataFim() {
+    public Instant getDataFim() {
         return dataFim;
     }
 
-    public void setDataFim(LocalDate dataFim) {
+    public void setDataFim(Instant dataFim) {
         this.dataFim = dataFim;
     }
 
@@ -122,14 +112,6 @@ public class Atividade implements Serializable{
 
     public void setStatus(StatusAtividade status) {
         this.status = status;
-    }
-
-    public Usuario getUsuarioResponsavel() {
-        return usuarioResponsavel;
-    }
-
-    public void setUsuarioResponsavel(Usuario usuarioResponsavel) {
-        this.usuarioResponsavel = usuarioResponsavel;
     }
 
     public Instant getDataCriacao() {

@@ -60,9 +60,6 @@ public class Usuario implements Serializable {
     @JoinTable(name = "usuarios_projetos", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_projeto"))
     private List<Projeto> projetos;
 
-    @OneToMany(mappedBy = "usuarioResponsavel")
-    private List<Atividade> atividadesResponsavel;
-
     @ManyToMany
     @JoinTable(name = "usuarios_atividades", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_atividade"))
     private List<Atividade> atividades;
@@ -151,14 +148,6 @@ public class Usuario implements Serializable {
 
     public void setProjetos(List<Projeto> projetos) {
         this.projetos = projetos;
-    }
-
-    public List<Atividade> getAtividadesResponsavel() {
-        return atividadesResponsavel;
-    }
-
-    public void setAtividadesResponsavel(List<Atividade> atividadesResponsavel) {
-        this.atividadesResponsavel = atividadesResponsavel;
     }
 
     public List<Atividade> getAtividades() {

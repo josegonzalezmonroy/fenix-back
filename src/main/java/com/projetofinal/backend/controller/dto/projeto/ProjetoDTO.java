@@ -4,7 +4,7 @@ import java.time.Instant;
 
 import com.projetofinal.backend.controller.dto.usuario.UsuarioSimplificadoDTO;
 import com.projetofinal.backend.entities.Models.Prioridade;
-import com.projetofinal.backend.entities.Models.Status;
+import com.projetofinal.backend.entities.Models.StatusProjeto;
 
 public class ProjetoDTO {
     private Long id;
@@ -12,13 +12,13 @@ public class ProjetoDTO {
     private String descricao;
     private Instant dataInicio;
     private Instant dataFim;
-    private Status status;
+    private StatusProjeto status;
     private UsuarioSimplificadoDTO usuarioResponsavel;
     private Instant dataCriacao;
     private Prioridade prioridade;
     private boolean ativo;
 
-    public ProjetoDTO(Long id, String nome, String descricao, Instant dataInicio, Instant dataFim, Status status,
+    public ProjetoDTO(Long id, String nome, String descricao, Instant dataInicio, Instant dataFim, StatusProjeto status,
             UsuarioSimplificadoDTO usuarioResponsavel, Instant dataCriacao, Prioridade prioridade, boolean ativo) {
         this.id = id;
         this.nome = nome;
@@ -44,7 +44,7 @@ public class ProjetoDTO {
         return ativo;
     }
 
-    public Status getStatus()
+    public StatusProjeto getStatus()
     {
         return status;
     }

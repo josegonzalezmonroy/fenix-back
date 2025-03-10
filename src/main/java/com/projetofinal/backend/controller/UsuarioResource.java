@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projetofinal.backend.controller.dto.usuario.UsuarioCreateDTO;
 import com.projetofinal.backend.controller.dto.usuario.UsuarioDTO;
 import com.projetofinal.backend.controller.dto.usuario.UsuarioEditDTO;
-import com.projetofinal.backend.controller.dto.usuario.UsuarioSimplificadoDTO;
 import com.projetofinal.backend.entities.Usuario;
 import com.projetofinal.backend.exceptions.UserAlreadyDisabledException;
 import com.projetofinal.backend.repositories.UsuarioRepository;

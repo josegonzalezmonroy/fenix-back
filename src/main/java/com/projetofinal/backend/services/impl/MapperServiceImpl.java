@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.projetofinal.backend.controller.dto.atividade.AtividadeCreateDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoCreateDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoEditDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoDTO;
@@ -13,10 +14,12 @@ import com.projetofinal.backend.controller.dto.usuario.UsuarioCreateDTO;
 import com.projetofinal.backend.controller.dto.usuario.UsuarioDTO;
 import com.projetofinal.backend.controller.dto.usuario.UsuarioEditDTO;
 import com.projetofinal.backend.controller.dto.usuario.UsuarioSimplificadoDTO;
+import com.projetofinal.backend.entities.Atividade;
 import com.projetofinal.backend.entities.Projeto;
 import com.projetofinal.backend.entities.Usuario;
 import com.projetofinal.backend.repositories.UsuarioRepository;
 import com.projetofinal.backend.services.MapperService;
+import com.projetofinal.backend.services.ProjetoService;
 import com.projetofinal.backend.services.UsuarioService;
 
 @Service
@@ -30,6 +33,9 @@ public class MapperServiceImpl implements MapperService {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private ProjetoService projetoService;
 
     @Override
     public Usuario usuarioCreateDTOToUsuario(UsuarioCreateDTO dto) {
@@ -109,5 +115,24 @@ public class MapperServiceImpl implements MapperService {
     public ProjetoDTO projetoToProjetoSimplificadoDTO(Projeto projeto) {
 
         return new ProjetoDTO(projeto.getId(), projeto.getNome(), projeto.getDescricao(), projeto.getDataInicio(), projeto.getDataFim(), projeto.getStatus(), usuarioToUsuarioSimplificadoDTO(projeto.getUsuarioResponsavel()), projeto.getDataCriacao(), projeto.getPrioridade(),  projeto.getAtivo());
+    }
+
+    @Override
+    public Atividade atividadeCreateDTOToAtividade(AtividadeCreateDTO dto) {
+
+        Atividade atividade = new Atividade();
+
+        Projeto projeto = projetoService.findProjectById(dto.getProjeto());
+        List<Usuario> usuarios = usuarioService.findAllUsersById(dto.getUsuariosId());
+
+        atividade.setNome(dto.getNome());
+        atividade.setDescricao(dto.getDescricao());
+        atividade.setDataInicio(dto.getDataInicio());
+        atividade.setDataFim(dto.getDataFim());
+        atividade.setStatus(dto.getStatus());
+        atividade.setProjeto(projeto);
+        atividade.setUsuarios(usuarios);
+
+        return atividade;
     }
 }

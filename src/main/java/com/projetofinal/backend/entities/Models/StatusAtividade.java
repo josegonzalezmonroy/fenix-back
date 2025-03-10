@@ -1,8 +1,9 @@
 package com.projetofinal.backend.entities.Models;
 
-public enum Status {
-    PLANEJADO,
+
+public enum StatusAtividade{
+    ABERTA,
     EM_ANDAMENTO,
-    CONCLUIDO,
-    CANCELADO
+    PAUSADA,
+    CONCLUIDA 
 }
