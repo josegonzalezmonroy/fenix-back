@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.projetofinal.backend.controller.dto.atividade.AtividadeCreateDTO;
 import com.projetofinal.backend.controller.dto.atividade.AtividadeDTO;
 import com.projetofinal.backend.controller.dto.atividade.AtividadeEditDTO;
+import com.projetofinal.backend.controller.dto.lancamentos.LancamentoEditDTO;
 import com.projetofinal.backend.controller.dto.lancamentos.LancamentoCreateDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoCreateDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoEditDTO;
@@ -183,6 +184,17 @@ public class MapperServiceImpl implements MapperService {
         lancamento.setDataFim(dto.getDataFim());
         lancamento.setAtividade(atividade);
         lancamento.setUsuario(usuario);
+
+        return lancamento;
+    }
+
+    @Override
+    public LancamentosHoras lancamentoEditDTOToLancamentos(LancamentoEditDTO dto) {
+        LancamentosHoras lancamento = new LancamentosHoras();
+
+        lancamento.setDescricao(dto.getDescricao());
+        lancamento.setDataInicio(dto.getDataInicio());
+        lancamento.setDataFim(dto.getDataFim());
 
         return lancamento;
     }
