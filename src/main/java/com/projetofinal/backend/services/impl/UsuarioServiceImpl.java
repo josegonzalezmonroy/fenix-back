@@ -32,15 +32,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public List<Usuario> getAllUsers() {
-        List<Usuario> usuariosAtivos = usuarioRepository.findByAtivo(true);
-        return usuariosAtivos;
-    }
-
-    @Override
-    public List<Usuario> getAllInactiveUsers() {
-        List<Usuario> usuariosInativos = usuarioRepository.findByAtivo(false);
-        return usuariosInativos;
+    public List<Usuario> getAllUsers(boolean ativo) {
+        return usuarioRepository.findByAtivo(ativo);
     }
 
     @Override
@@ -77,16 +70,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario findUserById(Long id)
     {
-        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Usuário não encontrado."));
-
-        return usuario;
+        return usuarioRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Usuário não encontrado."));
     }
 
     @Override
     public List<Usuario> findAllUsersById(List<Long> idList)
     {
-        List<Usuario> lista = usuarioRepository.findAllById(idList);
-
-        return lista;
+        return usuarioRepository.findAllById(idList);
     }
 }

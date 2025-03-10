@@ -1,12 +1,15 @@
 package com.projetofinal.backend.controller;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projetofinal.backend.controller.dto.atividade.AtividadeCreateDTO;
+import com.projetofinal.backend.controller.dto.atividade.AtividadeDTO;
 import com.projetofinal.backend.controller.dto.atividade.AtividadeEditDTO;
 import com.projetofinal.backend.entities.Atividade;
 import com.projetofinal.backend.exceptions.AlreadyDisabledException;
+import com.projetofinal.backend.repositories.AtividadeRepository;
 import com.projetofinal.backend.services.AtividadeService;
 import com.projetofinal.backend.services.MapperService;
 import com.projetofinal.backend.services.ValidatorService;
@@ -36,10 +41,41 @@ public class AtividadeResource {
     private AtividadeService atividadeService;
 
     @Autowired
+    private AtividadeRepository atividadeRepository;
+
+    @Autowired
     private ValidatorService validatorService;
 
+    @GetMapping
+    public ResponseEntity<List<AtividadeDTO>> getAllActivities() {
+        List<AtividadeDTO> listaDTO = atividadeService.getAllActivities(true).stream()
+                .map(mapperService::atividadeToAtividadeDTO).collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(listaDTO);
+    }
+
+    @GetMapping("inativas")
+    public ResponseEntity<List<AtividadeDTO>> getAllInactiveActitivies() {
+        List<AtividadeDTO> listaDTO = atividadeService.getAllActivities(false).stream()
+                .map(mapperService::atividadeToAtividadeDTO).collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(listaDTO);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Object> getAtividadeById(@PathVariable Long id) {
+        try {
+            Atividade atividade = atividadeRepository.findById(id)
+                    .orElseThrow(() -> new NoSuchElementException("Atividade não encontrada"));
+
+            return ResponseEntity.ok().body(mapperService.atividadeToAtividadeDTO(atividade));
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
     @PostMapping()
-    public ResponseEntity<String> saveAtivity(@Valid @RequestBody AtividadeCreateDTO dto) {
+    public ResponseEntity<String> saveActivity(@Valid @RequestBody AtividadeCreateDTO dto) {
         try {
             validatorService.validateData(dto.getDataInicio(), dto.getDataFim());
 

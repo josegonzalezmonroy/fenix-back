@@ -25,9 +25,9 @@ public class ProjetoServiceImpl implements ProjetoService {
     private UsuarioRepository usuarioRepository;
 
     @Override
-    public List<Projeto> getAllProjects() {
+    public List<Projeto> getAllProjects(boolean ativo) {
 
-        return projetoRepository.findAll();
+        return projetoRepository.findByAtivo(ativo);
     }
 
     @Transactional
@@ -77,8 +77,6 @@ public class ProjetoServiceImpl implements ProjetoService {
     @Override
     public Projeto findProjectById(Long id)
     {
-        Projeto projeto = projetoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Projeto não encontrado."));
-
-        return projeto;
+        return projetoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Projeto não encontrado."));
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.projetofinal.backend.controller.dto.atividade.AtividadeCreateDTO;
+import com.projetofinal.backend.controller.dto.atividade.AtividadeDTO;
 import com.projetofinal.backend.controller.dto.atividade.AtividadeEditDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoCreateDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoEditDTO;
@@ -113,7 +114,7 @@ public class MapperServiceImpl implements MapperService {
     }
 
     @Override
-    public ProjetoDTO projetoToProjetoSimplificadoDTO(Projeto projeto) {
+    public ProjetoDTO projetoToProjetoDTO(Projeto projeto) {
 
         return new ProjetoDTO(projeto.getId(), projeto.getNome(), projeto.getDescricao(), projeto.getDataInicio(), projeto.getDataFim(), projeto.getStatus(), usuarioToUsuarioSimplificadoDTO(projeto.getUsuarioResponsavel()), projeto.getDataCriacao(), projeto.getPrioridade(),  projeto.getAtivo());
     }
@@ -148,5 +149,13 @@ public class MapperServiceImpl implements MapperService {
         atividade.setStatus(dto.getStatus());
 
         return atividade;
+    }
+
+    @Override 
+    public AtividadeDTO atividadeToAtividadeDTO(Atividade atividade)
+    {
+        ProjetoDTO projetoDTO = projetoToProjetoDTO(projetoService.findProjectById(atividade.getProjeto().getId()));
+
+        return new AtividadeDTO(atividade.getId(), atividade.getNome(), atividade.getDescricao(), atividade.getDataInicio(), atividade.getDataFim(), atividade.getStatus(), atividade.getDataCriacao(), atividade.getAtivo(), projetoDTO);
     }
 }

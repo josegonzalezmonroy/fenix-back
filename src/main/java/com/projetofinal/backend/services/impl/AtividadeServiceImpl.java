@@ -23,7 +23,13 @@ public class AtividadeServiceImpl implements AtividadeService {
     
     @Autowired
     private UsuarioRepository usuarioRepository;
-    
+
+    @Override
+    public List<Atividade> getAllActivities(boolean ativo)
+    {
+        return atividadeRepository.findByAtivo(ativo);
+    }
+
     @Transactional
     @Override
     public void save(Atividade atividade, List<Long> usuariosSelecionados) {

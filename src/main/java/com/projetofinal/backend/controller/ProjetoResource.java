@@ -48,9 +48,16 @@ public class ProjetoResource {
 
     @GetMapping
     public ResponseEntity<List<ProjetoDTO>> getAllProjects() {
+        List<ProjetoDTO> listaDTO = projetoService.getAllProjects(true).stream()
+                .map(mapperService::projetoToProjetoDTO).collect(Collectors.toList());
 
-        List<ProjetoDTO> listaDTO = projetoService.getAllProjects().stream()
-                .map(mapperService::projetoToProjetoSimplificadoDTO).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listaDTO);
+    }
+
+    @GetMapping("inativos")
+    public ResponseEntity<List<ProjetoDTO>> getAllInactiveProjects() {
+        List<ProjetoDTO> listaDTO = projetoService.getAllProjects(false).stream()
+                .map(mapperService::projetoToProjetoDTO).collect(Collectors.toList());
 
         return ResponseEntity.ok().body(listaDTO);
     }
@@ -61,7 +68,7 @@ public class ProjetoResource {
             Projeto projeto = projetoRepository.findById(id)
                     .orElseThrow(() -> new NoSuchElementException("Projeto não encontrado"));
 
-            return ResponseEntity.ok().body(mapperService.projetoToProjetoSimplificadoDTO(projeto));
+            return ResponseEntity.ok().body(mapperService.projetoToProjetoDTO(projeto));
 
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -90,7 +97,7 @@ public class ProjetoResource {
         try {
 
             validatorService.validateData(dto.getDataInicio(), dto.getDataFim());
-            
+
             Projeto editProjeto = mapperService.projetoEditDTOToProjeto(dto);
             editProjeto.setId(id);
 

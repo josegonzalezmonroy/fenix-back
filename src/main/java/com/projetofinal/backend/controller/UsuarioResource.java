@@ -45,9 +45,17 @@ public class UsuarioResource {
 
     @GetMapping
     public ResponseEntity<List<UsuarioDTO>> getAllUsers() {
-        List<UsuarioDTO> listaDTO = usuarioService.getAllUsers().stream()
+        List<UsuarioDTO> listaDTO = usuarioService.getAllUsers(true).stream()
                 .map(mapperService::usuarioToUsuarioDTO).collect(Collectors.toList());
 
+        return ResponseEntity.ok().body(listaDTO);
+    }
+
+    @GetMapping("inativos")
+    public ResponseEntity<List<UsuarioDTO>> getAllInactiveUsers() {
+        List<UsuarioDTO> listaDTO = usuarioService.getAllUsers(false).stream()
+                .map(mapperService::usuarioToUsuarioDTO).collect(Collectors.toList());
+            
         return ResponseEntity.ok().body(listaDTO);
     }
 
@@ -62,14 +70,6 @@ public class UsuarioResource {
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-    }
-
-    @GetMapping("inativos")
-    public ResponseEntity<List<UsuarioDTO>> getUsuariosInativos() {
-        List<UsuarioDTO> listaDTO = usuarioService.getAllInactiveUsers().stream()
-                .map(mapperService::usuarioToUsuarioDTO).collect(Collectors.toList());
-            
-        return ResponseEntity.ok().body(listaDTO);
     }
 
     @PostMapping

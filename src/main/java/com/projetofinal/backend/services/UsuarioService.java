@@ -9,9 +9,7 @@ import com.projetofinal.backend.entities.Usuario;
 
 public interface UsuarioService {
 
-    public List<Usuario> getAllUsers();
-
-    public List<Usuario> getAllInactiveUsers();
+    public List<Usuario> getAllUsers(boolean ativo);
 
     public boolean login(LoginRequest loginRequest, PasswordEncoder passwordEncoder);
 
