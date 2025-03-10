@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.projetofinal.backend.controller.dto.login.LoginRequest;
 import com.projetofinal.backend.entities.Usuario;
-import com.projetofinal.backend.exceptions.UserAlreadyDisabledException;
+import com.projetofinal.backend.exceptions.AlreadyDisabledException;
 import com.projetofinal.backend.repositories.UsuarioRepository;
 import com.projetofinal.backend.services.UsuarioService;
 
@@ -67,7 +67,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado."));
 
         if (!usuario.getAtivo()) {
-            throw new UserAlreadyDisabledException("Usuário já está desativado.");
+            throw new AlreadyDisabledException("Usuário já está desativado.");
         }
 
         usuario.setAtivo(false);

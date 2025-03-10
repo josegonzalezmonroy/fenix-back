@@ -22,7 +22,7 @@ import com.projetofinal.backend.controller.dto.usuario.UsuarioCreateDTO;
 import com.projetofinal.backend.controller.dto.usuario.UsuarioDTO;
 import com.projetofinal.backend.controller.dto.usuario.UsuarioEditDTO;
 import com.projetofinal.backend.entities.Usuario;
-import com.projetofinal.backend.exceptions.UserAlreadyDisabledException;
+import com.projetofinal.backend.exceptions.AlreadyDisabledException;
 import com.projetofinal.backend.repositories.UsuarioRepository;
 import com.projetofinal.backend.services.MapperService;
 import com.projetofinal.backend.services.UsuarioService;
@@ -105,8 +105,8 @@ public class UsuarioResource {
     public ResponseEntity<String> deleteUsuario(@PathVariable Long id) {
         try {
             usuarioService.desativarUsuario(id);
-            return ResponseEntity.ok("Usuário deletado com sucesso!");
-        } catch (UserAlreadyDisabledException e) {
+            return ResponseEntity.ok("Usuário desativado com sucesso!");
+        } catch (AlreadyDisabledException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

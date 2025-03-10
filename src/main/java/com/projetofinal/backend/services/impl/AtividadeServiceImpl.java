@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.projetofinal.backend.entities.Atividade;
 import com.projetofinal.backend.entities.Usuario;
+import com.projetofinal.backend.exceptions.AlreadyDisabledException;
 import com.projetofinal.backend.repositories.AtividadeRepository;
 import com.projetofinal.backend.repositories.UsuarioRepository;
 import com.projetofinal.backend.services.AtividadeService;
@@ -50,6 +51,20 @@ public class AtividadeServiceImpl implements AtividadeService {
         atividadeAtual.setStatus(atividade.getStatus());
 
         atividadeRepository.save(atividadeAtual);
+    }
+
+    @Override
+    public void desativarAtividade(Long id)
+    {
+        Atividade atividade = atividadeRepository.findById(id).orElseThrow(()->new NoSuchElementException("Atividade não encontrada"));
+
+        if (!atividade.getAtivo())
+        {
+            throw new AlreadyDisabledException("Atividade já está desativada");
+        }
+
+        atividade.setAtivo(false);
+        atividadeRepository.save(atividade);
     }
 
 }

@@ -122,7 +122,7 @@ public class Atividade implements Serializable{
         this.dataCriacao = dataCriacao;
     }
 
-    public boolean isAtivo() {
+    public boolean getAtivo() {
         return ativo;
     }
 

@@ -21,7 +21,7 @@ import com.projetofinal.backend.controller.dto.projeto.ProjetoCreateDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoEditDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoDTO;
 import com.projetofinal.backend.entities.Projeto;
-import com.projetofinal.backend.exceptions.UserAlreadyDisabledException;
+import com.projetofinal.backend.exceptions.AlreadyDisabledException;
 import com.projetofinal.backend.services.MapperService;
 import com.projetofinal.backend.services.ProjetoService;
 import com.projetofinal.backend.services.ValidatorService;
@@ -88,6 +88,9 @@ public class ProjetoResource {
     @PatchMapping("{id}")
     public ResponseEntity<String> updateProjeto(@Valid @RequestBody ProjetoEditDTO dto, @PathVariable Long id) {
         try {
+
+            validatorService.validateData(dto.getDataInicio(), dto.getDataFim());
+            
             Projeto editProjeto = mapperService.projetoEditDTOToProjeto(dto);
             editProjeto.setId(id);
 
@@ -103,8 +106,8 @@ public class ProjetoResource {
     public ResponseEntity<String> deleteProjeto(@PathVariable Long id) {
         try {
             projetoService.desativarProjeto(id);
-            return ResponseEntity.ok("Projeto deletado com sucesso!");
-        } catch (UserAlreadyDisabledException e) {
+            return ResponseEntity.ok("Projeto desativado com sucesso!");
+        } catch (AlreadyDisabledException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
