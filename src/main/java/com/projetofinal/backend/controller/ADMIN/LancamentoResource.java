@@ -106,8 +106,10 @@ public class LancamentoResource {
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteLancamento(@PathVariable Long id) {
         try {
+
             lancamentoService.desativarLancamento(id);
             return ResponseEntity.ok("Lançamento desativado com sucesso!");
+            
         } catch (AlreadyDisabledException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (NoSuchElementException e) {

@@ -13,4 +13,8 @@ public interface LancamentoService {
     public void update(LancamentosHoras lancamento);
 
     public void desativarLancamento(Long id);
+
+    public List<LancamentosHoras> findLancamentosByUsuario(Long usuarioId);
+
+    public void desativarOwnLancamento(Long idLancamento, Long idUsuario);
 }
