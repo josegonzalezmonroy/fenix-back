@@ -38,7 +38,7 @@ import jakarta.validation.Valid;
 @RestController
 @PreAuthorize("hasAuthority('SCOPE_USUARIO')")
 @RequestMapping("user")
-public class ResourceUser {
+public class UserResource {
 
     @Autowired
     private ProjetoService projetoService;
