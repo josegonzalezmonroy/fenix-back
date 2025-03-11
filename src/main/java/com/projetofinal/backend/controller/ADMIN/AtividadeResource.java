@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projetofinal.backend.controller.dto.atividade.AtividadeCreateDTO;
-import com.projetofinal.backend.controller.dto.atividade.AtividadeDTO;
-import com.projetofinal.backend.controller.dto.atividade.AtividadeEditDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.atividade.AtividadeCreateDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.atividade.AtividadeDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.atividade.AtividadeEditDTO;
 import com.projetofinal.backend.entities.Atividade;
 import com.projetofinal.backend.exceptions.AlreadyDisabledException;
 import com.projetofinal.backend.repositories.AtividadeRepository;

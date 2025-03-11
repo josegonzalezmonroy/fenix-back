@@ -1,4 +1,4 @@
-package com.projetofinal.backend.controller.dto.usuario;
+package com.projetofinal.backend.controller.ADMIN.dto.usuario;
 
 import com.projetofinal.backend.entities.Models.Perfil;
 

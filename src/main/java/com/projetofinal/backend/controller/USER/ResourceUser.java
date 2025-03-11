@@ -1,4 +1,4 @@
-package com.projetofinal.backend.controller;
+package com.projetofinal.backend.controller.USER;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,15 +11,19 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projetofinal.backend.controller.dto.atividade.AtividadeDTO;
-import com.projetofinal.backend.controller.dto.projeto.ProjetoDTO;
-import com.projetofinal.backend.controller.dto.usuario.ProfileEditDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.atividade.AtividadeDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.projeto.ProjetoDTO;
+import com.projetofinal.backend.controller.USER.dto.ProfileCreateLancamentoDTO;
+import com.projetofinal.backend.controller.USER.dto.ProfileEditDTO;
+import com.projetofinal.backend.entities.LancamentosHoras;
 import com.projetofinal.backend.entities.Usuario;
 import com.projetofinal.backend.services.AtividadeService;
+import com.projetofinal.backend.services.LancamentoService;
 import com.projetofinal.backend.services.MapperService;
 import com.projetofinal.backend.services.ProjetoService;
 import com.projetofinal.backend.services.UsuarioService;
@@ -39,6 +43,9 @@ public class ResourceUser {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private LancamentoService lancamentoService;
 
     @Autowired
     private MapperService mapperService;
@@ -63,6 +70,19 @@ public class ResourceUser {
                 .map(mapperService::atividadeToAtividadeDTO).collect(Collectors.toList());
 
         return ResponseEntity.ok().body(listaDTO);
+    }
+
+    @PostMapping()
+    public ResponseEntity<String> saveLancamento(@Valid @RequestBody ProfileCreateLancamentoDTO dto,
+            @AuthenticationPrincipal Jwt jwt) {
+
+        Long id = Long.parseLong(jwt.getSubject());
+
+        LancamentosHoras lancamento = mapperService.profileCreateLancamentoDTOToLancamentos(dto, id);
+
+        lancamentoService.save(lancamento);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Lancamento criado com sucesso!");
     }
 
     @PatchMapping

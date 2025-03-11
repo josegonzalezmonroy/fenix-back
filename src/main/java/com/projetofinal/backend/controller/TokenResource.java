@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projetofinal.backend.controller.dto.login.LoginRequest;
-import com.projetofinal.backend.controller.dto.login.LoginResponse;
+import com.projetofinal.backend.controller.ADMIN.dto.login.LoginRequest;
+import com.projetofinal.backend.controller.ADMIN.dto.login.LoginResponse;
 import com.projetofinal.backend.repositories.UsuarioRepository;
 import com.projetofinal.backend.services.UsuarioService;
 

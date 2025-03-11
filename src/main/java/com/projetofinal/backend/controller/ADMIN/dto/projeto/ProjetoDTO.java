@@ -1,8 +1,8 @@
-package com.projetofinal.backend.controller.dto.projeto;
+package com.projetofinal.backend.controller.ADMIN.dto.projeto;
 
 import java.time.Instant;
 
-import com.projetofinal.backend.controller.dto.usuario.UsuarioSimplificadoDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.usuario.UsuarioSimplificadoDTO;
 import com.projetofinal.backend.entities.Models.Prioridade;
 import com.projetofinal.backend.entities.Models.StatusProjeto;
 

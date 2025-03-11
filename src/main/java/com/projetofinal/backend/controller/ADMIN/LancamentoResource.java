@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projetofinal.backend.controller.dto.lancamentos.LancamentoCreateDTO;
-import com.projetofinal.backend.controller.dto.lancamentos.LancamentoDTO;
-import com.projetofinal.backend.controller.dto.lancamentos.LancamentoEditDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.lancamentos.LancamentoCreateDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.lancamentos.LancamentoDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.lancamentos.LancamentoEditDTO;
 import com.projetofinal.backend.entities.LancamentosHoras;
 import com.projetofinal.backend.exceptions.AlreadyDisabledException;
 import com.projetofinal.backend.repositories.LancamentoRepository;
@@ -43,21 +43,17 @@ public class LancamentoResource {
     private LancamentoService lancamentoService;
 
     @GetMapping
-    public ResponseEntity<List<LancamentoDTO>> getAllLancamentos()
-    {
+    public ResponseEntity<List<LancamentoDTO>> getAllLancamentos() {
         List<LancamentoDTO> listaDTO = lancamentoService.getAllLancamentos(true).stream().map(
-            mapperService::lancamentosHorasToLancamentoDTO
-        ).collect(Collectors.toList());
+                mapperService::lancamentosHorasToLancamentoDTO).collect(Collectors.toList());
 
         return ResponseEntity.ok().body(listaDTO);
     }
 
     @GetMapping("inativos")
-    public ResponseEntity<List<LancamentoDTO>> getAllInactiveLancamentos()
-    {
+    public ResponseEntity<List<LancamentoDTO>> getAllInactiveLancamentos() {
         List<LancamentoDTO> listaDTO = lancamentoService.getAllLancamentos(false).stream().map(
-            mapperService::lancamentosHorasToLancamentoDTO
-        ).collect(Collectors.toList());
+                mapperService::lancamentosHorasToLancamentoDTO).collect(Collectors.toList());
 
         return ResponseEntity.ok().body(listaDTO);
     }
@@ -76,6 +72,7 @@ public class LancamentoResource {
 
     @PostMapping
     public ResponseEntity<String> saveLancamento(@Valid @RequestBody LancamentoCreateDTO dto) {
+
         try {
 
             LancamentosHoras lancamento = mapperService.lancamentoCreateDTOToLancamentos(dto);

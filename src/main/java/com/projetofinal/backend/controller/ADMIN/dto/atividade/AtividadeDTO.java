@@ -1,8 +1,8 @@
-package com.projetofinal.backend.controller.dto.atividade;
+package com.projetofinal.backend.controller.ADMIN.dto.atividade;
 
 import java.time.Instant;
 
-import com.projetofinal.backend.controller.dto.projeto.ProjetoDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.projeto.ProjetoDTO;
 import com.projetofinal.backend.entities.Models.StatusAtividade;
 
 public class AtividadeDTO {

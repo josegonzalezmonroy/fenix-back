@@ -1,4 +1,4 @@
-package com.projetofinal.backend.controller.dto.lancamentos;
+package com.projetofinal.backend.controller.ADMIN.dto.lancamentos;
 
 import java.time.Instant;
 

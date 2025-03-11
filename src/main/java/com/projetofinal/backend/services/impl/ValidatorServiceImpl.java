@@ -25,9 +25,9 @@ public class ValidatorServiceImpl implements ValidatorService {
     }
 
     @Override
-    public void findConflictingHoras(Instant inicio, Instant fim, Long id) {
+    public void findConflictingHoras(Instant inicio, Instant fim, Long id, Long usuarioId) {
         List<LancamentosHoras> conflitos = lancamentoRepository.findConflictingHoras(
-                inicio, fim, id);
+                inicio, fim, id, usuarioId);
 
         if (!conflitos.isEmpty()) {
             throw new InvalidDateException("Há um conflito de horas com outros registros.");

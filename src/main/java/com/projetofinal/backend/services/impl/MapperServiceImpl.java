@@ -6,20 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.projetofinal.backend.controller.dto.atividade.AtividadeCreateDTO;
-import com.projetofinal.backend.controller.dto.atividade.AtividadeDTO;
-import com.projetofinal.backend.controller.dto.atividade.AtividadeEditDTO;
-import com.projetofinal.backend.controller.dto.lancamentos.LancamentoEditDTO;
-import com.projetofinal.backend.controller.dto.lancamentos.LancamentoCreateDTO;
-import com.projetofinal.backend.controller.dto.lancamentos.LancamentoDTO;
-import com.projetofinal.backend.controller.dto.projeto.ProjetoCreateDTO;
-import com.projetofinal.backend.controller.dto.projeto.ProjetoEditDTO;
-import com.projetofinal.backend.controller.dto.projeto.ProjetoDTO;
-import com.projetofinal.backend.controller.dto.usuario.ProfileEditDTO;
-import com.projetofinal.backend.controller.dto.usuario.UsuarioCreateDTO;
-import com.projetofinal.backend.controller.dto.usuario.UsuarioDTO;
-import com.projetofinal.backend.controller.dto.usuario.UsuarioEditDTO;
-import com.projetofinal.backend.controller.dto.usuario.UsuarioSimplificadoDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.atividade.AtividadeCreateDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.atividade.AtividadeDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.atividade.AtividadeEditDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.lancamentos.LancamentoCreateDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.lancamentos.LancamentoDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.lancamentos.LancamentoEditDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.projeto.ProjetoCreateDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.projeto.ProjetoDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.projeto.ProjetoEditDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.usuario.UsuarioCreateDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.usuario.UsuarioDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.usuario.UsuarioEditDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.usuario.UsuarioSimplificadoDTO;
+import com.projetofinal.backend.controller.USER.dto.ProfileCreateLancamentoDTO;
+import com.projetofinal.backend.controller.USER.dto.ProfileEditDTO;
 import com.projetofinal.backend.entities.Atividade;
 import com.projetofinal.backend.entities.LancamentosHoras;
 import com.projetofinal.backend.entities.Projeto;
@@ -216,8 +217,27 @@ public class MapperServiceImpl implements MapperService {
         Usuario usuarioEdit = usuarioService.findUserById(id);
 
         usuarioEdit.setNome(dto.getNome());
-        usuarioEdit.setSenha(dto.getSenha());
+        usuarioEdit.setSenha(passwordEncoder.encode(dto.getSenha()));
 
         return usuarioEdit;
+    }
+
+    @Override
+    public LancamentosHoras profileCreateLancamentoDTOToLancamentos(ProfileCreateLancamentoDTO dto, Long id) {
+        LancamentosHoras lancamento = new LancamentosHoras();
+        
+        Usuario usuario = usuarioService.findUserById(id);
+
+        Atividade atividade = atividadeService.findActivityById(dto.getAtividade());
+
+        lancamento.setAtividade(atividade);
+        lancamento.setDescricao(dto.getDescricao());
+        lancamento.setDataInicio(dto.getDataInicio());
+        lancamento.setDataFim(dto.getDataFim());
+
+
+        lancamento.setUsuario(usuario);
+
+        return lancamento;
     }
 }

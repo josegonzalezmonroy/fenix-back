@@ -1,9 +1,9 @@
-package com.projetofinal.backend.controller.dto.lancamentos;
+package com.projetofinal.backend.controller.ADMIN.dto.lancamentos;
 
 import java.time.Instant;
 
-import com.projetofinal.backend.controller.dto.atividade.AtividadeDTO;
-import com.projetofinal.backend.controller.dto.usuario.UsuarioSimplificadoDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.atividade.AtividadeDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.usuario.UsuarioSimplificadoDTO;
 
 public class LancamentoDTO {
     private Long id;

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.projetofinal.backend.controller.dto.login.LoginRequest;
+import com.projetofinal.backend.controller.ADMIN.dto.login.LoginRequest;
 import com.projetofinal.backend.entities.Usuario;
 
 public interface UsuarioService {

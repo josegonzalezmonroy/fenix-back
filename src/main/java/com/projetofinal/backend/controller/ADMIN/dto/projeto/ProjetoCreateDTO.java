@@ -1,4 +1,4 @@
-package com.projetofinal.backend.controller.dto.projeto;
+package com.projetofinal.backend.controller.ADMIN.dto.projeto;
 
 import java.time.Instant;
 import java.util.List;

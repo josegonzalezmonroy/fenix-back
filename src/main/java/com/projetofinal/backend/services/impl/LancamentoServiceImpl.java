@@ -26,7 +26,7 @@ public class LancamentoServiceImpl implements LancamentoService{
 
         validatorService.validateData(lancamento.getDataInicio(), lancamento.getDataFim());
 
-        validatorService.findConflictingHoras(lancamento.getDataInicio(), lancamento.getDataFim(), lancamento.getUsuario().getId());
+        validatorService.findConflictingHoras(lancamento.getDataInicio(), lancamento.getDataFim(), null, lancamento.getUsuario().getId());
 
         lancamentoRepository.save(lancamento);
     }
@@ -36,7 +36,7 @@ public class LancamentoServiceImpl implements LancamentoService{
 
         validatorService.validateData(lancamentoEdit.getDataInicio(), lancamentoEdit.getDataFim());
 
-        validatorService.findConflictingHoras(lancamentoEdit.getDataInicio(), lancamentoEdit.getDataFim(), lancamentoEdit.getId());
+        validatorService.findConflictingHoras(lancamentoEdit.getDataInicio(), lancamentoEdit.getDataFim(), lancamentoEdit.getId(), lancamentoEdit.getUsuario().getId());
         
         LancamentosHoras lancamentoAtual = lancamentoRepository.findById(lancamentoEdit.getId())
                         .orElseThrow(() -> new NoSuchElementException("Lançamento não encontrado"));
