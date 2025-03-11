@@ -16,5 +16,5 @@ public interface ProjetoService {
 
     public Projeto findProjectById(Long id);
 
-
+    public List<Projeto> findProjectosByUser(Long id);
 }

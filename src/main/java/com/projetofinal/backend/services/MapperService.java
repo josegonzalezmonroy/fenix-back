@@ -9,6 +9,7 @@ import com.projetofinal.backend.controller.dto.lancamentos.LancamentoDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoCreateDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoEditDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoDTO;
+import com.projetofinal.backend.controller.dto.usuario.ProfileEditDTO;
 import com.projetofinal.backend.controller.dto.usuario.UsuarioCreateDTO;
 import com.projetofinal.backend.controller.dto.usuario.UsuarioDTO;
 import com.projetofinal.backend.controller.dto.usuario.UsuarioEditDTO;
@@ -45,4 +46,6 @@ public interface MapperService {
     public LancamentosHoras lancamentoEditDTOToLancamentos(LancamentoEditDTO dto);
 
     public LancamentoDTO lancamentosHorasToLancamentoDTO(LancamentosHoras lancamentos);
+
+    public Usuario profileEditDTOtoUsuario(ProfileEditDTO dto, Long id);
 }

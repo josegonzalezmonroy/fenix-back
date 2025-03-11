@@ -1,4 +1,4 @@
-package com.projetofinal.backend.controller;
+package com.projetofinal.backend.controller.ADMIN;
 
 import java.util.List;
 import java.util.NoSuchElementException;

@@ -79,4 +79,11 @@ public class ProjetoServiceImpl implements ProjetoService {
     {
         return projetoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Projeto não encontrado"));
     }
+
+    @Override
+    public List<Projeto> findProjectosByUser(Long id) {
+
+        return projetoRepository.findByUsuarios_Id(id);
+    }
+
 }

@@ -15,6 +15,7 @@ import com.projetofinal.backend.controller.dto.lancamentos.LancamentoDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoCreateDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoEditDTO;
 import com.projetofinal.backend.controller.dto.projeto.ProjetoDTO;
+import com.projetofinal.backend.controller.dto.usuario.ProfileEditDTO;
 import com.projetofinal.backend.controller.dto.usuario.UsuarioCreateDTO;
 import com.projetofinal.backend.controller.dto.usuario.UsuarioDTO;
 import com.projetofinal.backend.controller.dto.usuario.UsuarioEditDTO;
@@ -208,5 +209,15 @@ public class MapperServiceImpl implements MapperService {
         AtividadeDTO atividade = atividadeToAtividadeDTO(atividadeService.findActivityById(lancamentos.getAtividade().getId()));
 
         return new LancamentoDTO(lancamentos.getId(), atividade, usuario, lancamentos.getDescricao(), lancamentos.getDataInicio(), lancamentos.getDataFim(), lancamentos.getDataFim(), lancamentos.getAtivo());
+    }
+
+    @Override
+    public Usuario profileEditDTOtoUsuario(ProfileEditDTO dto, Long id) {
+        Usuario usuarioEdit = usuarioService.findUserById(id);
+
+        usuarioEdit.setNome(dto.getNome());
+        usuarioEdit.setSenha(dto.getSenha());
+
+        return usuarioEdit;
     }
 }

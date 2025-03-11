@@ -15,4 +15,6 @@ public interface AtividadeService {
     public void desativarAtividade(Long id);
 
     public Atividade findActivityById(Long id);
+
+    public List<Atividade> findActivityByUser(Long id);
 }

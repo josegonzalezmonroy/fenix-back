@@ -78,4 +78,9 @@ public class AtividadeServiceImpl implements AtividadeService {
         return atividadeRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Atividade não encontrada"));
     }
 
+    @Override
+    public List<Atividade> findActivityByUser(Long id) {
+        return atividadeRepository.findByUsuarios_Id(id);
+    }
+
 }
