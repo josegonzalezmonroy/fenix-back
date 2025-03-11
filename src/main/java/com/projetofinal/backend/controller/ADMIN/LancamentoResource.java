@@ -25,7 +25,6 @@ import com.projetofinal.backend.exceptions.AlreadyDisabledException;
 import com.projetofinal.backend.repositories.LancamentoRepository;
 import com.projetofinal.backend.services.LancamentoService;
 import com.projetofinal.backend.services.MapperService;
-import com.projetofinal.backend.services.ValidatorService;
 
 import jakarta.validation.Valid;
 
@@ -42,9 +41,6 @@ public class LancamentoResource {
 
     @Autowired
     private LancamentoService lancamentoService;
-
-    @Autowired
-    private ValidatorService validatorService;
 
     @GetMapping
     public ResponseEntity<List<LancamentoDTO>> getAllLancamentos()
@@ -81,11 +77,10 @@ public class LancamentoResource {
     @PostMapping
     public ResponseEntity<String> saveLancamento(@Valid @RequestBody LancamentoCreateDTO dto) {
         try {
-            validatorService.validateData(dto.getDataInicio(), dto.getDataFim());
 
             LancamentosHoras lancamento = mapperService.lancamentoCreateDTOToLancamentos(dto);
 
-            lancamentoRepository.save(lancamento);
+            lancamentoService.save(lancamento);
 
             return ResponseEntity.status(HttpStatus.CREATED).body("Lancamento criado com sucesso!");
 
@@ -98,8 +93,6 @@ public class LancamentoResource {
     @PatchMapping("{id}")
     public ResponseEntity<String> updateLancamento(@Valid @RequestBody LancamentoEditDTO dto, @PathVariable Long id) {
         try {
-
-            validatorService.validateData(dto.getDataInicio(), dto.getDataFim());
 
             LancamentosHoras lancamentoEdit = mapperService.lancamentoEditDTOToLancamentos(dto);
             lancamentoEdit.setId(id);

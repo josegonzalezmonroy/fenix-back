@@ -8,6 +8,8 @@ public interface LancamentoService {
 
     public List<LancamentosHoras> getAllLancamentos(boolean ativo);
 
+    public void save(LancamentosHoras lancamento);
+
     public void update(LancamentosHoras lancamento);
 
     public void desativarLancamento(Long id);

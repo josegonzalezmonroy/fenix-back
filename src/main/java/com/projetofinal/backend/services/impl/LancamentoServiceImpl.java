@@ -10,6 +10,7 @@ import com.projetofinal.backend.entities.LancamentosHoras;
 import com.projetofinal.backend.exceptions.AlreadyDisabledException;
 import com.projetofinal.backend.repositories.LancamentoRepository;
 import com.projetofinal.backend.services.LancamentoService;
+import com.projetofinal.backend.services.ValidatorService;
 
 @Service
 public class LancamentoServiceImpl implements LancamentoService{
@@ -17,8 +18,25 @@ public class LancamentoServiceImpl implements LancamentoService{
     @Autowired
     private LancamentoRepository lancamentoRepository;
 
+        @Autowired
+    private ValidatorService validatorService;
+
+    @Override
+    public void save(LancamentosHoras lancamento) {
+
+        validatorService.validateData(lancamento.getDataInicio(), lancamento.getDataFim());
+
+        validatorService.findConflictingHoras(lancamento.getDataInicio(), lancamento.getDataFim(), lancamento.getUsuario().getId());
+
+        lancamentoRepository.save(lancamento);
+    }
+
     @Override
     public void update(LancamentosHoras lancamentoEdit) {
+
+        validatorService.validateData(lancamentoEdit.getDataInicio(), lancamentoEdit.getDataFim());
+
+        validatorService.findConflictingHoras(lancamentoEdit.getDataInicio(), lancamentoEdit.getDataFim(), lancamentoEdit.getId());
         
         LancamentosHoras lancamentoAtual = lancamentoRepository.findById(lancamentoEdit.getId())
                         .orElseThrow(() -> new NoSuchElementException("Lançamento não encontrado"));
@@ -47,6 +65,5 @@ public class LancamentoServiceImpl implements LancamentoService{
     @Override
     public List<LancamentosHoras> getAllLancamentos(boolean ativo) {
         return lancamentoRepository.findByAtivo(ativo);
-    }
-    
+    }    
 }
