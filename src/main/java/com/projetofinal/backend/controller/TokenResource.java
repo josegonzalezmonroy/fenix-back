@@ -62,7 +62,9 @@ public class TokenResource {
     
             var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     
-            return ResponseEntity.ok(new LoginResponse(jwtValue, expiresIn));
+            String nome = usuario.get().getNome();
+
+            return ResponseEntity.ok(new LoginResponse(jwtValue, expiresIn, nome));
 
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());

@@ -71,12 +71,12 @@ public class ProjetoResource {
             return ResponseEntity.ok().body(mapperService.projetoToProjetoDTO(projeto));
 
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage(e.getMessage()));
         }
     }
 
     @PostMapping
-    public ResponseEntity<String> saveProjeto(@Valid @RequestBody ProjetoCreateDTO dto) {
+    public ResponseEntity<ResponseMessage> saveProjeto(@Valid @RequestBody ProjetoCreateDTO dto) {
         try {
 
             validatorService.validateData(dto.getDataInicio(), dto.getDataFim());
@@ -85,15 +85,14 @@ public class ProjetoResource {
 
             projetoService.save(projeto, dto.getUsuarios());
 
-            return ResponseEntity.status(HttpStatus.CREATED).body("Projeto criado com sucesso!");
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
-        }
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage("Projeto criado com sucesso!"));
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage(e.getMessage()));    
+        }   
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<String> updateProjeto(@Valid @RequestBody ProjetoEditDTO dto, @PathVariable Long id) {
+    public ResponseEntity<ResponseMessage> updateProjeto(@Valid @RequestBody ProjetoEditDTO dto, @PathVariable Long id) {
         try {
 
             validatorService.validateData(dto.getDataInicio(), dto.getDataFim());
@@ -103,21 +102,21 @@ public class ProjetoResource {
 
             projetoService.update(editProjeto);
 
-            return ResponseEntity.status(HttpStatus.OK).body("Projeto modificado com sucesso!");
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Projeto modificado com sucesso!"));
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage(e.getMessage()));    
         }
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteProjeto(@PathVariable Long id) {
+    public ResponseEntity<ResponseMessage> deleteProjeto(@PathVariable Long id) {
         try {
             projetoService.desativarProjeto(id);
-            return ResponseEntity.ok("Projeto desativado com sucesso!");
+            return ResponseEntity.ok(new ResponseMessage("Projeto desativado com sucesso!"));
         } catch (AlreadyDisabledException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(e.getMessage()));
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage(e.getMessage()));
         }
     }
 }

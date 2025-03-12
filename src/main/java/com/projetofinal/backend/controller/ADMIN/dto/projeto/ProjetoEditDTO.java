@@ -36,16 +36,16 @@ public class ProjetoEditDTO {
 
     @JsonProperty("id_usuario_responsavel")
     @NotNull(message = "Usuário responsável obrigatório")
-    private Long idUsuarioResponsavel;
+    private Long usuarioResponsavel;
 
-    public ProjetoEditDTO(String nome, String descricao, Instant dataInicio, Instant dataFim, StatusProjeto status, Prioridade prioridade, Long idUsuarioResponsavel) {
+    public ProjetoEditDTO(String nome, String descricao, Instant dataInicio, Instant dataFim, StatusProjeto status, Prioridade prioridade, Long usuarioResponsavel) {
         this.nome = nome;
         this.descricao = descricao;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.status = status;
         this.prioridade = prioridade;
-        this.idUsuarioResponsavel = idUsuarioResponsavel;
+        this.usuarioResponsavel = usuarioResponsavel;
     }
 
     public String getNome() {
@@ -73,6 +73,6 @@ public class ProjetoEditDTO {
     }
 
     public Long getIdUsuarioResponsavel() {
-        return idUsuarioResponsavel;
+        return usuarioResponsavel;
     }
 }
