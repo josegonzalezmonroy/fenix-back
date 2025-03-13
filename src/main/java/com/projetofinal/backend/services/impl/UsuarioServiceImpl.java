@@ -44,11 +44,14 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public void update(Usuario usuario) {
         Usuario usuarioAtual = usuarioRepository.findById(usuario.getId())
-        .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado"));
+                .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado"));
 
         usuarioAtual.setNome(usuario.getNome());
         usuarioAtual.setEmail(usuario.getEmail());
-        usuarioAtual.setSenha(usuario.getSenha());
+
+        if (usuario.getSenha() != null && !usuario.getSenha().isEmpty()) {
+            usuarioAtual.setSenha(usuario.getSenha());
+        }
         usuarioAtual.setPerfil(usuario.getPerfil());
 
         usuarioRepository.save(usuarioAtual);
@@ -68,14 +71,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Usuario findUserById(Long id)
-    {
+    public Usuario findUserById(Long id) {
         return usuarioRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Usuário não encontrado."));
     }
 
     @Override
-    public List<Usuario> findAllUsersById(List<Long> idList)
-    {
+    public List<Usuario> findAllUsersById(List<Long> idList) {
         return usuarioRepository.findAllById(idList);
     }
 }

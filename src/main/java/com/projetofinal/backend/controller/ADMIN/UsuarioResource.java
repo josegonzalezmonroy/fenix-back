@@ -73,18 +73,18 @@ public class UsuarioResource {
     }
 
     @PostMapping
-    public ResponseEntity<String> saveUsuario(@Valid @RequestBody UsuarioCreateDTO dto) {
+    public ResponseEntity<ResponseMessage> saveUsuario(@Valid @RequestBody UsuarioCreateDTO dto) {
         try {
             usuarioService.save(mapperService.usuarioCreateDTOToUsuario(dto));
-            return ResponseEntity.status(HttpStatus.CREATED).body("Usuário criado com sucesso!");
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage("Usuário criado com sucesso!"));
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("E-mail já cadastrado");
+                    .body(new ResponseMessage("E-mail já cadastrado"));
         }
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<String> updateUsuario(@Valid @RequestBody UsuarioEditDTO dto, @PathVariable Long id) {
+    public ResponseEntity<ResponseMessage> updateUsuario(@Valid @RequestBody UsuarioEditDTO dto, @PathVariable Long id) {
         try {
 
             Usuario editUsuario = mapperService.usuarioEditDTOToUsuario(dto);
@@ -92,24 +92,24 @@ public class UsuarioResource {
 
             usuarioService.update(editUsuario);
 
-            return ResponseEntity.status(HttpStatus.OK).body("Usuário modificado com sucesso!");
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Usuário modificado com sucesso!"));
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage(e.getMessage()));
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("E-mail já cadastrado");
+            .body(new ResponseMessage("E-mail já cadastrado"));
         }
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteUsuario(@PathVariable Long id) {
+    public ResponseEntity<ResponseMessage> deleteUsuario(@PathVariable Long id) {
         try {
             usuarioService.desativarUsuario(id);
-            return ResponseEntity.ok("Usuário desativado com sucesso!");
+            return ResponseEntity.ok(new ResponseMessage("Usuário desativado com sucesso!"));
         } catch (AlreadyDisabledException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(e.getMessage()));
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage(e.getMessage()));
         }
     }
 }

@@ -71,7 +71,7 @@ public class LancamentoResource {
     }
 
     @PostMapping
-    public ResponseEntity<String> saveLancamento(@Valid @RequestBody LancamentoCreateDTO dto) {
+    public ResponseEntity<ResponseMessage> saveLancamento(@Valid @RequestBody LancamentoCreateDTO dto) {
 
         try {
 
@@ -79,16 +79,16 @@ public class LancamentoResource {
 
             lancamentoService.save(lancamento);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body("Lancamento criado com sucesso!");
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage("Lancamento criado com sucesso!"));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
+                    .body(new ResponseMessage(e.getMessage()));
         }
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<String> updateLancamento(@Valid @RequestBody LancamentoEditDTO dto, @PathVariable Long id) {
+    public ResponseEntity<ResponseMessage> updateLancamento(@Valid @RequestBody LancamentoEditDTO dto, @PathVariable Long id) {
         try {
 
             LancamentosHoras lancamentoEdit = mapperService.lancamentoEditDTOToLancamentos(dto);
@@ -96,24 +96,24 @@ public class LancamentoResource {
 
             lancamentoService.update(lancamentoEdit);
 
-            return ResponseEntity.status(HttpStatus.OK).body("Lancamento modificado com sucesso!");
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Lancamento modificado com sucesso!"));
 
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage(e.getMessage()));
         }
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteLancamento(@PathVariable Long id) {
+    public ResponseEntity<ResponseMessage> deleteLancamento(@PathVariable Long id) {
         try {
 
             lancamentoService.desativarLancamento(id);
-            return ResponseEntity.ok("Lançamento desativado com sucesso!");
+            return ResponseEntity.ok(new ResponseMessage("Lançamento desativado com sucesso!"));
             
         } catch (AlreadyDisabledException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(e.getMessage()));
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage(e.getMessage()));
         }
     }
 }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projetofinal.backend.controller.ADMIN.dto.projeto.ProjetoCreateDTO;
 import com.projetofinal.backend.controller.ADMIN.dto.projeto.ProjetoDTO;
 import com.projetofinal.backend.controller.ADMIN.dto.projeto.ProjetoEditDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.usuario.UsuarioSimplificadoDTO;
 import com.projetofinal.backend.entities.Projeto;
 import com.projetofinal.backend.exceptions.AlreadyDisabledException;
 import com.projetofinal.backend.services.MapperService;
@@ -118,5 +119,20 @@ public class ProjetoResource {
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage(e.getMessage()));
         }
+    }
+
+    @GetMapping("{projectId}/usuarios")
+    public ResponseEntity<List<UsuarioSimplificadoDTO>> getUsersByProjectId(@PathVariable Long projectId) {
+        List<UsuarioSimplificadoDTO> usuariosDTO = projetoService.getUsersByProjectId(projectId).stream().map(
+            mapperService::usuarioToUsuarioSimplificadoDTO
+        ).collect(Collectors.toList());
+        return ResponseEntity.ok(usuariosDTO);
+    }
+
+    @GetMapping("usuario/{id}")
+    public ResponseEntity<List<ProjetoDTO>> getProjectsByUsuario(@PathVariable Long id){
+        List<ProjetoDTO> projetosDTO = projetoService.findProjectosByUser(id).stream().map(mapperService::projetoToProjetoDTO).collect(Collectors.toList());
+
+        return ResponseEntity.ok(projetosDTO);
     }
 }

@@ -9,6 +9,14 @@ import jakarta.validation.constraints.NotNull;
 
 public class LancamentoEditDTO {
 
+    @JsonProperty("id_atividade")
+    @NotNull(message = "Atividade obrigatória")
+    private Long atividade;
+
+    @JsonProperty("id_usuario")
+    @NotNull(message = "Usuário obrigatório")
+    private Long usuario;
+
     @NotBlank(message = "A descrição é obrigatória")
     private String descricao;
 
@@ -20,10 +28,13 @@ public class LancamentoEditDTO {
     @NotNull(message = "Data fim obrigatória")
     private Instant dataFim;
 
-    public LancamentoEditDTO(String descricao, Instant dataInicio, Instant dataFim) {
+    public LancamentoEditDTO(Long usuario, Long atividade, String descricao, Instant dataInicio, Instant dataFim) {
         this.descricao = descricao;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
+        this.usuario = usuario;
+        this.atividade = atividade;
+
     }
 
     public String getDescricao() {
@@ -36,5 +47,15 @@ public class LancamentoEditDTO {
 
     public Instant getDataFim() {
         return dataFim;
+    }
+
+    public Long getUsuario()
+    {
+        return usuario;
+    }
+
+    public Long getAtividade()
+    {
+        return atividade;
     }
 }

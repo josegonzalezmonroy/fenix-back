@@ -17,4 +17,6 @@ public interface AtividadeService {
     public Atividade findActivityById(Long id);
 
     public List<Atividade> findActivityByUser(Long id);
+
+    public List<Atividade> getAtividadesByProjetoAndUsuario(Long projetoId, Long usuarioId);
 }

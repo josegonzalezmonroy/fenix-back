@@ -75,7 +75,7 @@ public class AtividadeResource {
     }
 
     @PostMapping()
-    public ResponseEntity<String> saveActivity(@Valid @RequestBody AtividadeCreateDTO dto) {
+    public ResponseEntity<ResponseMessage> saveActivity(@Valid @RequestBody AtividadeCreateDTO dto) {
         try {
             validatorService.validateData(dto.getDataInicio(), dto.getDataFim());
 
@@ -83,16 +83,16 @@ public class AtividadeResource {
 
             atividadeService.save(atividade, dto.getUsuariosId());
 
-            return ResponseEntity.status(HttpStatus.CREATED).body("Atividade criada com sucesso!");
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage("Atividade criada com sucesso!"));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
+                    .body(new ResponseMessage(e.getMessage()));
         }
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<String> updateAtividade(@Valid @RequestBody AtividadeEditDTO dto, @PathVariable Long id) {
+    public ResponseEntity<ResponseMessage> updateAtividade(@Valid @RequestBody AtividadeEditDTO dto, @PathVariable Long id) {
         try {
 
             validatorService.validateData(dto.getDataInicio(), dto.getDataFim());
@@ -102,21 +102,30 @@ public class AtividadeResource {
 
             atividadeService.update(editAtiviadde);
 
-            return ResponseEntity.status(HttpStatus.OK).body("Atividade modificada com sucesso!");
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Atividade modificada com sucesso!"));
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage(e.getMessage()));
         }
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteProjeto(@PathVariable Long id) {
+    public ResponseEntity<ResponseMessage> deleteProjeto(@PathVariable Long id) {
         try {
             atividadeService.desativarAtividade(id);
-            return ResponseEntity.ok("Atividade desativada com sucesso!");
+            return ResponseEntity.ok(new ResponseMessage("Atividade desativada com sucesso!"));
         } catch (AlreadyDisabledException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(e.getMessage()));
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage(e.getMessage()));
         }
+    }
+
+    @GetMapping("/projeto/{projetoId}/usuario/{usuarioId}")
+    public ResponseEntity<List<AtividadeDTO>> getAtividadesByProjetoAndUsuario(
+            @PathVariable Long projetoId, 
+            @PathVariable Long usuarioId) {
+        List<AtividadeDTO> atividades = atividadeService.getAtividadesByProjetoAndUsuario(projetoId, usuarioId).stream().map(mapperService::atividadeToAtividadeDTO).collect(Collectors.toList());
+        
+        return ResponseEntity.ok(atividades);
     }
 }

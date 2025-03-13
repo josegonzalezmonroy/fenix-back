@@ -66,7 +66,10 @@ public class MapperServiceImpl implements MapperService {
 
         usuarioEdit.setNome(dto.getNome());
         usuarioEdit.setEmail(dto.getEmail());
-        usuarioEdit.setSenha(passwordEncoder.encode(dto.getSenha()));
+        if (dto.getSenha() != null && !dto.getSenha().isEmpty()) {
+            usuarioEdit.setSenha(passwordEncoder.encode(dto.getSenha()));
+        }
+
         usuarioEdit.setPerfil(dto.getPerfil());
 
         return usuarioEdit;
@@ -195,21 +198,31 @@ public class MapperServiceImpl implements MapperService {
     public LancamentosHoras lancamentoEditDTOToLancamentos(LancamentoEditDTO dto) {
         LancamentosHoras lancamento = new LancamentosHoras();
 
+        Atividade atividade = atividadeService.findActivityById(dto.getAtividade());
+
+        Usuario usuario = usuarioService.findUserById(dto.getUsuario());
+
         lancamento.setDescricao(dto.getDescricao());
         lancamento.setDataInicio(dto.getDataInicio());
         lancamento.setDataFim(dto.getDataFim());
+        lancamento.setAtividade(atividade);
+        lancamento.setUsuario(usuario);
 
         return lancamento;
     }
 
     @Override
     public LancamentoDTO lancamentosHorasToLancamentoDTO(LancamentosHoras lancamentos) {
-        
-        UsuarioSimplificadoDTO usuario = usuarioToUsuarioSimplificadoDTO(usuarioService.findUserById(lancamentos.getUsuario().getId()));
 
-        AtividadeDTO atividade = atividadeToAtividadeDTO(atividadeService.findActivityById(lancamentos.getAtividade().getId()));
+        UsuarioSimplificadoDTO usuario = usuarioToUsuarioSimplificadoDTO(
+                usuarioService.findUserById(lancamentos.getUsuario().getId()));
 
-        return new LancamentoDTO(lancamentos.getId(), atividade, usuario, lancamentos.getDescricao(), lancamentos.getDataInicio(), lancamentos.getDataFim(), lancamentos.getDataFim(), lancamentos.getAtivo());
+        AtividadeDTO atividade = atividadeToAtividadeDTO(
+                atividadeService.findActivityById(lancamentos.getAtividade().getId()));
+
+        return new LancamentoDTO(lancamentos.getId(), atividade, usuario, lancamentos.getDescricao(),
+                lancamentos.getDataInicio(), lancamentos.getDataFim(), lancamentos.getDataFim(),
+                lancamentos.getAtivo());
     }
 
     @Override
@@ -225,7 +238,7 @@ public class MapperServiceImpl implements MapperService {
     @Override
     public LancamentosHoras profileCreateLancamentoDTOToLancamentos(ProfileCreateLancamentoDTO dto, Long id) {
         LancamentosHoras lancamento = new LancamentosHoras();
-        
+
         Usuario usuario = usuarioService.findUserById(id);
 
         Atividade atividade = atividadeService.findActivityById(dto.getAtividade());
@@ -234,7 +247,6 @@ public class MapperServiceImpl implements MapperService {
         lancamento.setDescricao(dto.getDescricao());
         lancamento.setDataInicio(dto.getDataInicio());
         lancamento.setDataFim(dto.getDataFim());
-
 
         lancamento.setUsuario(usuario);
 

@@ -2,7 +2,9 @@ package com.projetofinal.backend.services;
 
 import java.util.List;
 
+import com.projetofinal.backend.controller.ADMIN.dto.usuario.UsuarioSimplificadoDTO;
 import com.projetofinal.backend.entities.Projeto;
+import com.projetofinal.backend.entities.Usuario;
 
 public interface ProjetoService {
 
@@ -17,4 +19,6 @@ public interface ProjetoService {
     public Projeto findProjectById(Long id);
 
     public List<Projeto> findProjectosByUser(Long id);
+
+    public List<Usuario> getUsersByProjectId(Long projectId);
 }
