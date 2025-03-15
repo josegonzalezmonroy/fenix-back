@@ -19,9 +19,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projetofinal.backend.controller.ADMIN.ResponseMessage;
 import com.projetofinal.backend.controller.ADMIN.dto.atividade.AtividadeDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.lancamentos.LancamentoCreateDTO;
 import com.projetofinal.backend.controller.ADMIN.dto.lancamentos.LancamentoDTO;
 import com.projetofinal.backend.controller.ADMIN.dto.projeto.ProjetoDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.usuario.UsuarioSimplificadoDTO;
 import com.projetofinal.backend.controller.USER.dto.ProfileCreateLancamentoDTO;
 import com.projetofinal.backend.controller.USER.dto.ProfileEditDTO;
 import com.projetofinal.backend.entities.LancamentosHoras;
@@ -77,6 +80,17 @@ public class UserResource {
         return ResponseEntity.ok().body(listaDTO);
     }
 
+    @GetMapping("atividades/projeto/{projectId}")
+    public ResponseEntity<List<AtividadeDTO>> getAllActivitiesByProjectId(@PathVariable Long projectId,
+            @AuthenticationPrincipal Jwt jwt) {
+        Long userId = Long.parseLong(jwt.getSubject());
+
+        List<AtividadeDTO> listaDTO = atividadeService.findAllActivitiesByUserAndProject(userId, projectId).stream()
+                .map(mapperService::atividadeToAtividadeDTO).collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(listaDTO);
+    }
+
     @GetMapping("lancamentos")
     public ResponseEntity<List<LancamentoDTO>> getAllLancamentos(@AuthenticationPrincipal Jwt jwt) {
 
@@ -88,23 +102,40 @@ public class UserResource {
         return ResponseEntity.ok().body(listaDTO);
     }
 
+    @PostMapping("lancamentos")
+    public ResponseEntity<ResponseMessage> saveLancamento(@Valid @RequestBody LancamentoCreateDTO dto) {
+
+        try {
+            LancamentosHoras lancamento = mapperService.lancamentoCreateDTOToLancamentos(dto);
+
+            lancamentoService.save(lancamento);
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ResponseMessage("Lancamento criado com sucesso!"));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+    }
+
     @DeleteMapping("lancamentos/{id}")
-    public ResponseEntity<String> deleteLancamento(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<ResponseMessage> deleteLancamento(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         Long idUsuario = Long.parseLong(jwt.getSubject());
         try {
 
             lancamentoService.desativarOwnLancamento(id, idUsuario);
-            return ResponseEntity.ok("Lançamento desativado com sucesso!");
+            return ResponseEntity.ok(new ResponseMessage("Lançamento desativado com sucesso!"));
 
         } catch (AlreadyDisabledException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(e.getMessage()));
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage(e.getMessage()));
         }
     }
 
     @PostMapping()
-    public ResponseEntity<String> saveLancamento(@Valid @RequestBody ProfileCreateLancamentoDTO dto,
+    public ResponseEntity<ResponseMessage> saveLancamento(@Valid @RequestBody ProfileCreateLancamentoDTO dto,
             @AuthenticationPrincipal Jwt jwt) {
 
         Long id = Long.parseLong(jwt.getSubject());
@@ -113,11 +144,11 @@ public class UserResource {
 
         lancamentoService.save(lancamento);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Lancamento criado com sucesso!");
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage("Lancamento criado com sucesso!"));
     }
 
     @PatchMapping
-    public ResponseEntity<String> updateUsuario(@Valid @RequestBody ProfileEditDTO dto,
+    public ResponseEntity<ResponseMessage> updateUsuario(@Valid @RequestBody ProfileEditDTO dto,
             @AuthenticationPrincipal Jwt jwt) {
 
         Long id = Long.parseLong(jwt.getSubject());
@@ -126,7 +157,16 @@ public class UserResource {
 
         usuarioService.update(editUsuario);
 
-        return ResponseEntity.status(HttpStatus.OK).body("Dados alterados com sucesso!");
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Dados alterados com sucesso!"));
+    }
+
+    @GetMapping()
+    public ResponseEntity<UsuarioSimplificadoDTO> getProfile(@AuthenticationPrincipal Jwt jwt) {
+
+        Long idUser = Long.parseLong(jwt.getSubject());
+
+        return ResponseEntity.ok()
+                .body(mapperService.usuarioToUsuarioSimplificadoDTO(usuarioService.findUserById(idUser)));
     }
 
 }

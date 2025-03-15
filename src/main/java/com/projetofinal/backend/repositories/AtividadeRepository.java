@@ -13,9 +13,12 @@ public interface AtividadeRepository extends JpaRepository<Atividade, Long> {
 
         List<Atividade> findByUsuarios_Id(Long id);
 
-           @Query("SELECT a FROM Atividade a " +
-           "JOIN a.usuarios u " +
-           "WHERE a.projeto.id = :projetoId AND u.id = :usuarioId")
-    List<Atividade> findByProjetoIdAndUsuarioId(@Param("projetoId") Long projetoId, 
-                                                @Param("usuarioId") Long usuarioId);
+        @Query("SELECT a FROM Atividade a " +
+                        "JOIN a.usuarios u " +
+                        "WHERE a.projeto.id = :projetoId AND u.id = :usuarioId")
+        List<Atividade> findByProjetoIdAndUsuarioId(
+                        @Param("usuarioId") Long usuarioId,
+                        @Param("projetoId") Long projetoId
+
+        );
 }

@@ -47,7 +47,10 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado"));
 
         usuarioAtual.setNome(usuario.getNome());
-        usuarioAtual.setEmail(usuario.getEmail());
+        if(usuario.getEmail() != null && !usuario.getEmail().isEmpty())
+        {
+            usuarioAtual.setEmail(usuario.getEmail());
+        }
 
         if (usuario.getSenha() != null && !usuario.getSenha().isEmpty()) {
             usuarioAtual.setSenha(usuario.getSenha());

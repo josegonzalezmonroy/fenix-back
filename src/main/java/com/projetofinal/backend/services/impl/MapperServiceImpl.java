@@ -227,10 +227,13 @@ public class MapperServiceImpl implements MapperService {
 
     @Override
     public Usuario profileEditDTOtoUsuario(ProfileEditDTO dto, Long id) {
-        Usuario usuarioEdit = usuarioService.findUserById(id);
+        Usuario usuarioEdit = new Usuario();
 
+        usuarioEdit.setId(id);
         usuarioEdit.setNome(dto.getNome());
-        usuarioEdit.setSenha(passwordEncoder.encode(dto.getSenha()));
+        if (dto.getSenha() != null && !dto.getSenha().isEmpty()) {
+            usuarioEdit.setSenha(passwordEncoder.encode(dto.getSenha()));
+        }
 
         return usuarioEdit;
     }

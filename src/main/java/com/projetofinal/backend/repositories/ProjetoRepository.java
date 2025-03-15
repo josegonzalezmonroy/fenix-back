@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.projetofinal.backend.controller.ADMIN.dto.usuario.UsuarioSimplificadoDTO;
 import com.projetofinal.backend.entities.Projeto;
 import com.projetofinal.backend.entities.Usuario;
 

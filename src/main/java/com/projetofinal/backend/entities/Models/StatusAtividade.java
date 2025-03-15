@@ -1,7 +1,7 @@
 package com.projetofinal.backend.entities.Models;
 
 
-public enum     StatusAtividade{
+public enum StatusAtividade{
     ABERTA,
     EM_ANDAMENTO,
     PAUSADA,

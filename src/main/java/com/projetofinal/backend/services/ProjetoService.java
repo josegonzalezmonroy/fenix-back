@@ -2,7 +2,6 @@ package com.projetofinal.backend.services;
 
 import java.util.List;
 
-import com.projetofinal.backend.controller.ADMIN.dto.usuario.UsuarioSimplificadoDTO;
 import com.projetofinal.backend.entities.Projeto;
 import com.projetofinal.backend.entities.Usuario;
 

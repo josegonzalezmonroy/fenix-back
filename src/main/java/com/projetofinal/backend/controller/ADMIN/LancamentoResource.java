@@ -79,7 +79,8 @@ public class LancamentoResource {
 
             lancamentoService.save(lancamento);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage("Lancamento criado com sucesso!"));
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ResponseMessage("Lancamento criado com sucesso!"));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -88,7 +89,8 @@ public class LancamentoResource {
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<ResponseMessage> updateLancamento(@Valid @RequestBody LancamentoEditDTO dto, @PathVariable Long id) {
+    public ResponseEntity<ResponseMessage> updateLancamento(@Valid @RequestBody LancamentoEditDTO dto,
+            @PathVariable Long id) {
         try {
 
             LancamentosHoras lancamentoEdit = mapperService.lancamentoEditDTOToLancamentos(dto);
@@ -109,7 +111,7 @@ public class LancamentoResource {
 
             lancamentoService.desativarLancamento(id);
             return ResponseEntity.ok(new ResponseMessage("Lançamento desativado com sucesso!"));
-            
+
         } catch (AlreadyDisabledException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(e.getMessage()));
         } catch (NoSuchElementException e) {

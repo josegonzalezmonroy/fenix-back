@@ -6,7 +6,6 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.projetofinal.backend.controller.ADMIN.dto.usuario.UsuarioSimplificadoDTO;
 import com.projetofinal.backend.entities.Projeto;
 import com.projetofinal.backend.entities.Usuario;
 import com.projetofinal.backend.exceptions.AlreadyDisabledException;
