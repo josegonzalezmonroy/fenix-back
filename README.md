@@ -64,5 +64,5 @@ Este projeto não possui uma licença definida no momento.
 ## Desenvolvedores
 
 Este projeto foi desenvolvido por:
-- **[Jose Gonzalez Monroy]**
+- **[Jose Gonzalez Monroy](https://github.com/josegonzalezmonroy)**
 
