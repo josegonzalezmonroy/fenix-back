@@ -128,4 +128,11 @@ public class AtividadeResource {
         
         return ResponseEntity.ok(atividades);
     }
+
+    @GetMapping("/projeto/{projetoId}")
+    public ResponseEntity<List<AtividadeDTO>> getAtividadesByProjeto(@PathVariable Long projetoId){
+        List<AtividadeDTO> atividades = atividadeService.getAtividadesByProjeto(projetoId).stream().map(mapperService::atividadeToAtividadeDTO).collect(Collectors.toList());
+        
+        return ResponseEntity.ok(atividades);
+    }
 }

@@ -21,4 +21,6 @@ public interface AtividadeRepository extends JpaRepository<Atividade, Long> {
                         @Param("projetoId") Long projetoId
 
         );
+
+        List<Atividade> findByProjeto_Id(Long projetoId);
 }

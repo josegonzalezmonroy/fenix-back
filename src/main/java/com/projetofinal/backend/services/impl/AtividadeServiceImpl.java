@@ -93,4 +93,9 @@ public class AtividadeServiceImpl implements AtividadeService {
         return atividadeRepository.findByProjetoIdAndUsuarioId(userId,projectId);
     }
 
+    @Override
+    public List<Atividade> getAtividadesByProjeto(Long projetoId) {
+        return atividadeRepository.findByProjeto_Id(projetoId);
+    }
+
 }

@@ -48,7 +48,7 @@ public class TokenResource {
             usuarioRepository.save(usuario.get());
     
             var now = Instant.now();
-            var expiresIn = 7200L;
+            var expiresIn = 3600L;
     
             var scope = usuario.get().getPerfil();
     

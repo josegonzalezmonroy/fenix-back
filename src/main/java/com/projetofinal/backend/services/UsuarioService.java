@@ -22,4 +22,6 @@ public interface UsuarioService {
     public Usuario findUserById(Long id);
 
     public List<Usuario> findAllUsersById(List<Long> idList);
+
+    public List<Usuario> findByAtividades_Id(Long atividadeId);
 }

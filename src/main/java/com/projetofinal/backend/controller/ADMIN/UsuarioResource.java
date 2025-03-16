@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projetofinal.backend.controller.ADMIN.dto.usuario.UsuarioCreateDTO;
 import com.projetofinal.backend.controller.ADMIN.dto.usuario.UsuarioDTO;
 import com.projetofinal.backend.controller.ADMIN.dto.usuario.UsuarioEditDTO;
+import com.projetofinal.backend.controller.ADMIN.dto.usuario.UsuarioSimplificadoDTO;
 import com.projetofinal.backend.entities.Usuario;
 import com.projetofinal.backend.exceptions.AlreadyDisabledException;
 import com.projetofinal.backend.repositories.UsuarioRepository;
@@ -70,6 +71,14 @@ public class UsuarioResource {
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @GetMapping("atividades/{id}")
+    public ResponseEntity<List<UsuarioSimplificadoDTO>> findByAtividades_Id(@PathVariable Long id) {
+        List<UsuarioSimplificadoDTO> listaDTO = usuarioRepository.findByAtividades_Id(id).stream()
+                .map(mapperService::usuarioToUsuarioSimplificadoDTO).collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(listaDTO);
     }
 
     @PostMapping
